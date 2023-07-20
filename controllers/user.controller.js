@@ -96,3 +96,34 @@ exports.updateUserById = async (req, res) => {
     res.status(500).send(response);
   }
 };
+
+exports.deleteUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const theUser = await User.findByPk(id);
+    if (theUser === null || !theUser) {
+      const notFound = {
+        status_response: false,
+        message: 'User tidak di temukan',
+        errors: 'Not Found',
+        data: null,
+      };
+      return res.status(404).send(notFound);
+    }
+    await theUser.destroy();
+    const response = {
+      status_response: true,
+      message: 'User berhasil dihapus',
+      errors: null,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
