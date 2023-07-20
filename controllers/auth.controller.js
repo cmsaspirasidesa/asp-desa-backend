@@ -80,7 +80,6 @@ exports.login = async (req, res) => {
       message: 'Error while signing Admin!',
       error: error,
     };
-    console.log(error);
     res.status(404).send(response);
   }
 };

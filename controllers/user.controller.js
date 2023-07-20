@@ -1,8 +1,10 @@
 const User = require('../models').User;
 
-exports.findAllUser = (req, res) => {
+exports.findAllUser = async (req, res) => {
   try {
-    const users = User.findAll();
+    const users = await User.findAll({
+      attributes: ['id', 'nama', 'email', 'alamat', 'nik'],
+    });
     const response = {
       status_response: true,
       message: 'Semua data user',
