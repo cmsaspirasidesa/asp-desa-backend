@@ -30,6 +30,7 @@ exports.findUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const theUser = await User.findByPk(id, {
+      include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
       attributes: ['id', 'nama', 'email', 'alamat', 'nik'],
     });
     if (theUser === null || !theUser) {
