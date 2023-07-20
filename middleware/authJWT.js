@@ -66,3 +66,29 @@ exports.isAdmin = async (req, res, next) => {
   }
   next();
 };
+
+exports.isUser = async (req, res, next) => {
+  const id = req.userId;
+  const user = await User.findOne({ where: id });
+  if (!user) {
+    const response = {
+      status_response: false,
+      message: 'User not found',
+      errors: 'Data Not Found',
+      data: null,
+    };
+    res.status(404).send(response);
+    return;
+  }
+  if (user.role_id !== 1) {
+    const response = {
+      status_response: false,
+      message: 'Hanya user yang dapat mengakses',
+      errors: 'Error',
+      data: null,
+    };
+    res.status(403).send(response);
+    return;
+  }
+  next();
+};
