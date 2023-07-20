@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
   Aspiration.init(
     {
       id: {
-        type: DataTypes.UUID,
+        autoIncrement: true,
+        type: DataTypes.INTEGER,
         primaryKey: true,
       },
       judul: DataTypes.STRING,
@@ -22,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
       lokasi: DataTypes.STRING,
       status: DataTypes.STRING,
       komentar: DataTypes.STRING,
-      user_id: DataTypes.UUID,
+      user_id: DataTypes.INTEGER,
     },
     {
       sequelize,

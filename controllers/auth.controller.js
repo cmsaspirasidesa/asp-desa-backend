@@ -7,8 +7,7 @@ exports.register = async (req, res) => {
     if (!nama || !email || !password || !alamat || !nik) {
       const response = {
         status_response: false,
-        message: `Mohon masukan data secara lengkap nama, email,
-         password, alamat dan NIK`,
+        message: `Mohon masukan data secara lengkap nama, email, password, alamat dan NIK`,
         errors: 'Inclomplete Data',
         data: null,
       };
@@ -22,7 +21,7 @@ exports.register = async (req, res) => {
       alamat,
       nik,
     });
-    console.log(user);
+
     res.status(200).json(user);
   } catch (error) {
     const response = {

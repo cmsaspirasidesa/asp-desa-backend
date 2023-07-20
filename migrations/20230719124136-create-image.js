@@ -6,15 +6,15 @@ module.exports = {
       id: {
         allowNull: false,
         primaryKey: true,
-        type: Sequelize.UUID,
-        defaultValue: Sequelize.UUIDV4,
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
       },
       url: {
         allowNull: false,
         type: Sequelize.TEXT,
       },
       aspirasi_id: {
-        type: Sequelize.UUID,
+        type: Sequelize.INTEGER,
       },
       createdAt: {
         allowNull: false,

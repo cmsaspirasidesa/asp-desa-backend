@@ -13,6 +13,8 @@
     "indent": ["error", 2],
     "require-jsdoc": 0,
     "object-curly-spacing": ["error", "always"],
-    "quotes": ["error"]
+    "quotes": ["error"],
+    "new-cap": "off",
+    "max-len": "off"
   }
 }
