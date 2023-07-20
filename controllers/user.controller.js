@@ -4,10 +4,8 @@ const Role = require('../models').Role;
 exports.findAllUser = async (req, res) => {
   try {
     const users = await User.findAll({
-      include: [
-        { model: Role, where: { id: 1 }, attributes: ['id', 'nama_role'] },
-      ],
-      attributes: ['id', 'nama', 'email', 'alamat', 'nik', 'createdAt'],
+      include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
+      attributes: ['id', 'nama', 'email', 'nik'],
     });
     const response = {
       status_response: true,
