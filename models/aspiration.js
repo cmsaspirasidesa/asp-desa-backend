@@ -13,6 +13,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Aspiration.init(
     {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+      },
       judul: DataTypes.STRING,
       descripsi: DataTypes.STRING,
       lokasi: DataTypes.STRING,

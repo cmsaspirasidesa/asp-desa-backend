@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       alamat: DataTypes.STRING,
       nik: DataTypes.INTEGER,
-      role_id: DataTypes.STRING,
+      role_id: DataTypes.INTEGER,
     },
     {
       sequelize,
