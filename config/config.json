@@ -1,21 +1,21 @@
 {
   "development": {
-    "username": "root",
-    "password": "123",
-    "database": "test",
+    "username": "manges",
+    "password": "password",
+    "database": "asp_desa",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "test": {
-    "username": "root",
-    "password": "123",
+    "username": "asp_desa",
+    "password": "password",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
-    "username": "root",
-    "password": "123",
+    "username": "asp_desa",
+    "password": "password",
     "database": "test",
     "host": "127.0.0.1",
     "dialect": "mysql"

@@ -3,6 +3,12 @@ const User = require('../models').User;
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+require('dotenv').config();
+
+const generateAccessToken = (id) => {
+  return jwt.sign(id, process.env.TOKEN);
+};
+
 exports.register = async (req, res) => {
   try {
     const { nama, email, password: pw, alamat, nik } = req.body;
@@ -24,11 +30,7 @@ exports.register = async (req, res) => {
       nik,
     });
     const { password, ...others } = await user.dataValues;
-    const token =
-      'Bearer ' +
-      jwt.sign({ id: user.id }, process.env.TOKEN, {
-        expiresIn: '24h',
-      });
+    const token = 'Bearer ' + generateAccessToken({ id: user.id });
     const response = {
       status_response: true,
       message: 'Registrasi berhasil',
@@ -44,5 +46,41 @@ exports.register = async (req, res) => {
       data: null,
     };
     res.status(500).send(response);
+  }
+};
+
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    const theUser = await User.findOne({
+      where: { email: email },
+      attributes: ['nama', 'email'],
+    });
+
+    const decPass = bcrypt.compareSync(password, theUser.password);
+    let token;
+    if (theUser && decPass) {
+      token = generateAccessToken({ email: theUser.email });
+    }
+    if (!decPass || !theUser.email) {
+      res.status(403).send({
+        message: 'Email or password is incorrect!',
+        error: err,
+      });
+    }
+    const response = {
+      status_response: true,
+      message: 'Login berhasil',
+      errors: null,
+      data: { theUser, token },
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      message: 'Error while signing Admin!',
+      error: err,
+    };
+    res.status(404).send(response);
   }
 };

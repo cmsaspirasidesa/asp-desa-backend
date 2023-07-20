@@ -12,5 +12,5 @@ app.use(urlencoded({ extended: true }));
 app.use(authRoute);
 
 // db.sequelize.sync().then(() => {
-app.listen(port, () => console.log(`Server running on port ${port}`));
+app.listen(port, () => console.log(`Server running on port http://localhost:${port}`));
 // });
