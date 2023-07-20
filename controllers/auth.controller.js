@@ -51,17 +51,16 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password: pw } = req.body;
 
     const theUser = await User.findOne({
       where: { email: email },
-      attributes: ['nama', 'email'],
     });
-
-    const decPass = bcrypt.compareSync(password, theUser.password);
+    const { password, ...others } = theUser.dataValues;
+    const decPass = bcrypt.compareSync(pw, theUser.password);
     let token;
     if (theUser && decPass) {
-      token = generateAccessToken({ email: theUser.email });
+      token = generateAccessToken({ id: theUser.id });
     }
     if (!decPass || !theUser.email) {
       res.status(403).send({
@@ -73,14 +72,15 @@ exports.login = async (req, res) => {
       status_response: true,
       message: 'Login berhasil',
       errors: null,
-      data: { theUser, token },
+      data: { ...others, token },
     };
     res.status(200).send(response);
   } catch (error) {
     const response = {
       message: 'Error while signing Admin!',
-      error: err,
+      error: error,
     };
+    console.log(error);
     res.status(404).send(response);
   }
 };
