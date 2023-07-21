@@ -29,6 +29,9 @@ module.exports = (sequelize, DataTypes) => {
       password: DataTypes.STRING,
       alamat: DataTypes.STRING,
       nik: DataTypes.INTEGER,
+      refresh_token: DataTypes.TEXT,
+      access_token: DataTypes.TEXT,
+      expire: DataTypes.INTEGER,
       role_id: { type: DataTypes.INTEGER, defaultValue: 1 },
     },
     {

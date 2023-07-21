@@ -6,7 +6,14 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const generateAccessToken = (id) => {
-  return jwt.sign(id, process.env.TOKEN);
+  return jwt.sign(id, process.env.ACCESS, {
+    expiresIn: '20s',
+  });
+};
+const generateRefreshToken = (id) => {
+  return jwt.sign(id, process.env.REFRESH, {
+    expiresIn: '40s',
+  });
 };
 
 exports.register = async (req, res) => {
@@ -30,12 +37,20 @@ exports.register = async (req, res) => {
       nik,
     });
     const { password, ...others } = await user.dataValues;
-    const token = 'Bearer ' + generateAccessToken({ id: user.id });
+    const accsesToken = 'Bearer ' + generateAccessToken({ id: user.id });
+    const refreshToken = 'Bearer ' + generateRefreshToken({ id: user.id });
+    // const currentDate = newDate.now() + 604800;
+    const data = {
+      access_token: accsesToken,
+      refresh_token: refreshToken,
+      // expire: currentDate,
+    };
+    await User.update(data, { where: { id: user.dataValues.id } });
     const response = {
       status_response: true,
       message: 'Registrasi berhasil',
       errors: null,
-      data: { ...others, token },
+      data: { ...others, accsesToken },
     };
     res.status(200).json(response);
   } catch (error) {
@@ -68,6 +83,12 @@ exports.login = async (req, res) => {
         error: err,
       });
     }
+    const refreshToken = 'Bearer ' + generateRefreshToken({ id: theUser.id });
+
+    await User.update(
+      { refresh_token: refreshToken },
+      { where: { id: theUser.id } },
+    );
     const response = {
       status_response: true,
       message: 'Login berhasil',

@@ -57,18 +57,7 @@ exports.findUserById = async (req, res) => {
 exports.updateUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const findUser = await User.findByPk(id);
-    if (!findUser) {
-      const response = {
-        status_response: false,
-        message: 'User tidak di temukan',
-        errors: 'Not Found',
-        data: null,
-      };
-      return res.status(404).send(response);
-    }
     const { nama, email, password, alamat, nik } = req.body;
-
     const data = {
       nama,
       email,
@@ -77,9 +66,6 @@ exports.updateUserById = async (req, res) => {
     };
     if (password) {
       data.password = bcrypt.hashSync(password, 8);
-    }
-    if (req.userId !== id ) {
-
     }
     const user = await User.update(data, { where: { id } });
     const response = {
@@ -103,17 +89,7 @@ exports.updateUserById = async (req, res) => {
 exports.deleteUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const theUser = await User.findByPk(id);
-    if (theUser === null || !theUser) {
-      const notFound = {
-        status_response: false,
-        message: 'User tidak di temukan',
-        errors: 'Not Found',
-        data: null,
-      };
-      return res.status(404).send(notFound);
-    }
-    await theUser.destroy();
+    await User.destroy({ where: { id } });
     const response = {
       status_response: true,
       message: 'User berhasil dihapus',

@@ -30,6 +30,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      refresh_token: {
+        type: Sequelize.TEXT,
+      },
+      access_token: {
+        type: Sequelize.TEXT,
+      },
+      expire: {
+        type: Sequelize.INTEGER,
+      },
       role_id: {
         allowNull: false,
         defaultValue: 1,
