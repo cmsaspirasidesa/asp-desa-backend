@@ -25,7 +25,7 @@ exports.verifyToken = (req, res, next) => {
     res.status(403).send(response);
     return;
   }
-
+  console.log(jwt.decode(token, process.env.ACCESS));
   jwt.verify(token, process.env.ACCESS, async (error, decoded) => {
     if (error) {
       const response = {
