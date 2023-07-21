@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('../controllers/user.controller');
+const profileController = require('../controllers/profile.controller');
 const { verifyToken, isAdmin } = require('../middleware/authJWT');
 const { existingUser } = require('../middleware/isUserExist');
 const router = express.Router();
@@ -14,5 +15,9 @@ router.put(
   userController.updateUserById,
 );
 router.delete('/users/:id', existingUser, userController.deleteUserById);
+
+router.get('/profile', verifyToken, profileController.getUserProfile);
+router.put('/profile', verifyToken, profileController.updateProfile);
+
 
 module.exports = router;
