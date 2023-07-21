@@ -78,6 +78,9 @@ exports.updateUserById = async (req, res) => {
     if (password) {
       data.password = bcrypt.hashSync(password, 8);
     }
+    if (req.userId !== id ) {
+
+    }
     const user = await User.update(data, { where: { id } });
     const response = {
       status_response: true,
