@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       nik: DataTypes.INTEGER,
       refresh_token: DataTypes.TEXT,
       access_token: DataTypes.TEXT,
-      expire: DataTypes.INTEGER,
+      expire: DataTypes.DATE,
       role_id: { type: DataTypes.INTEGER, defaultValue: 1 },
     },
     {
