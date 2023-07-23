@@ -25,7 +25,6 @@ exports.verifyToken = (req, res, next) => {
     res.status(403).send(response);
     return;
   }
-  console.log(jwt.decode(token, process.env.ACCESS));
   jwt.verify(token, process.env.ACCESS, async (error, decoded) => {
     if (error) {
       const response = {
@@ -37,15 +36,27 @@ exports.verifyToken = (req, res, next) => {
       res.status(500).send(response);
       return;
     }
-    const user = await User.findOne({ where: { id: decoded.id } });
+    const user = await User.findOne({
+      where: { id: decoded.id, access_token: tokenHeader },
+    });
     if (!user) {
       const response = {
         status_response: false,
-        message: 'User not found',
+        message: `User dengan id ${decoded.id} tidak memiliki token tersebut`,
         errors: 'Data Not Found',
         data: null,
       };
       res.status(404).send(response);
+      return;
+    }
+    if (!user.refresh_token || !user.access_token) {
+      const response = {
+        status_response: false,
+        message: 'Tidak memiliki token, mohon login terlebih dahulu',
+        errors: 'Data Not Found',
+        data: null,
+      };
+      res.status(401).send(response);
       return;
     }
     req.userId = decoded.id;

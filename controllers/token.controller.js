@@ -19,8 +19,10 @@ exports.refreshToken = async (req, res) => {
         if (error || user.dataValues.expire <= new Date()) {
           const response = {
             status_response: false,
-            message: error.message || 'Mohon untuk login kembali',
-            errors: error || 'token expire',
+            message:
+              `${error.message}, mohon login kembali` ||
+              'Mohon untuk login kembali',
+            errors: error || 'token expired',
             data: null,
           };
           return res.status(403).send(response);
@@ -42,6 +44,8 @@ exports.refreshToken = async (req, res) => {
       },
     );
   } catch (error) {
+    console.log(error);
+
     const response = {
       status_response: false,
       message: error.message,

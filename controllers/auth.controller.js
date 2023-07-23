@@ -123,3 +123,29 @@ exports.login = async (req, res) => {
     res.status(404).send(response);
   }
 };
+
+exports.logout = async (req, res) => {
+  try {
+    const data = {
+      access_token: null,
+      refresh_token: null,
+      expire: null,
+    };
+    await User.update(data, { where: { id: req.userId } });
+    const response = {
+      status_response: true,
+      message: 'User berhasil logout',
+      errors: null,
+      data: null,
+    };
+    res.status(200).json(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
