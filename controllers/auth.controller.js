@@ -39,11 +39,19 @@ exports.register = async (req, res) => {
     const { password, ...others } = await user.dataValues;
     const accsesToken = 'Bearer ' + generateAccessToken({ id: user.id });
     const refreshToken = 'Bearer ' + generateRefreshToken({ id: user.id });
-    // const currentDate = newDate.now() + 604800;
+    const currentDate = new Date();
+    const sevenDaysFromNow = new Date(currentDate);
+    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+
+    const formattedSevenDaysFromNow = sevenDaysFromNow
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+
     const data = {
       access_token: accsesToken,
       refresh_token: refreshToken,
-      // expire: currentDate,
+      expire: formattedSevenDaysFromNow,
     };
     await User.update(data, { where: { id: user.dataValues.id } });
     const response = {
@@ -72,9 +80,18 @@ exports.login = async (req, res) => {
     });
     const { password, ...others } = theUser.dataValues;
     const decPass = bcrypt.compareSync(pw, theUser.password);
-    // const currentDate = newDate.now() + 604800;
     let accsesToken;
     let refreshToken;
+
+    const currentDate = new Date();
+    const sevenDaysFromNow = new Date(currentDate);
+    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+
+    const expire = sevenDaysFromNow
+      .toISOString()
+      .slice(0, 19)
+      .replace('T', ' ');
+
     if (theUser && decPass) {
       accsesToken = 'Bearer ' + generateAccessToken({ id: theUser.id });
       refreshToken = 'Bearer ' + generateRefreshToken({ id: theUser.id });
@@ -88,12 +105,9 @@ exports.login = async (req, res) => {
     const data = {
       access_token: accsesToken,
       refresh_token: refreshToken,
-      // expire: currentDate,
+      expire,
     };
-    await User.update(
-      data,
-      { where: { id: theUser.id } },
-    );
+    await User.update(data, { where: { id: theUser.id } });
     const response = {
       status_response: true,
       message: 'Login berhasil',

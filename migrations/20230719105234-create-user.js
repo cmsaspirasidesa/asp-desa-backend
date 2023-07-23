@@ -37,7 +37,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       expire: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATE,
       },
       role_id: {
         allowNull: false,
