@@ -10,5 +10,6 @@ router.post(
   upload.array('images', 2),
   aspirationController.addAspiration,
 );
+router.get('/aspirations', aspirationController.getAllAspirations);
 
 module.exports = router;
