@@ -6,9 +6,10 @@ const upload = require('../middleware/multer');
 
 router.post(
   '/aspirations',
-  verifyToken,
   upload.array('images', 2),
+  verifyToken,
   aspirationController.addAspiration,
 );
+router.get('/aspirations/:id', aspirationController.getAspirationById);
 
 module.exports = router;

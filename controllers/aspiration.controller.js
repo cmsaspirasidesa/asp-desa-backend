@@ -39,3 +39,30 @@ exports.addAspiration = async (req, res) => {
     res.status(500).send(response);
   }
 };
+
+exports.getAspirationById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const theAspiration = await Aspiration.findByPk(id, {
+      include: { model: Image, where: { aspirasi_id: id }, attributes: ['url', 'aspirasi_id'] },
+    });
+    if (theAspiration === null || !theAspiration) {
+      return res.status(404).send('not found');
+    }
+    const response = {
+      status_response: true,
+      message: 'Detail aspirasi',
+      errors: null,
+      data: theAspiration,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
