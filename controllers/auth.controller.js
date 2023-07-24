@@ -40,18 +40,15 @@ exports.register = async (req, res) => {
     const accsesToken = 'Bearer ' + generateAccessToken({ id: user.id });
     const refreshToken = 'Bearer ' + generateRefreshToken({ id: user.id });
     const currentDate = new Date();
-    const sevenDaysFromNow = new Date(currentDate);
-    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+    const oneDaysFromNow = new Date(currentDate);
+    oneDaysFromNow.setDate(oneDaysFromNow.getDate() + 1);
 
-    const formattedSevenDaysFromNow = sevenDaysFromNow
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ');
+    const expire = oneDaysFromNow.toISOString().slice(0, 19).replace('T', ' ');
 
     const data = {
       access_token: accsesToken,
       refresh_token: refreshToken,
-      expire: formattedSevenDaysFromNow,
+      expire,
     };
     await User.update(data, { where: { id: user.dataValues.id } });
     const response = {
@@ -84,13 +81,10 @@ exports.login = async (req, res) => {
     let refreshToken;
 
     const currentDate = new Date();
-    const sevenDaysFromNow = new Date(currentDate);
-    sevenDaysFromNow.setDate(sevenDaysFromNow.getDate() + 7);
+    const oneDaysFromNow = new Date(currentDate);
+    oneDaysFromNow.setDate(oneDaysFromNow.getDate() + 1);
 
-    const expire = sevenDaysFromNow
-      .toISOString()
-      .slice(0, 19)
-      .replace('T', ' ');
+    const expire = oneDaysFromNow.toISOString().slice(0, 19).replace('T', ' ');
 
     if (theUser && decPass) {
       accsesToken = 'Bearer ' + generateAccessToken({ id: theUser.id });
