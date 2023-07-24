@@ -1,20 +1,12 @@
 /* eslint-disable no-unused-vars */
 const User = require('../models').User;
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require('../utils/generateToken');
 
 require('dotenv').config();
-
-const generateAccessToken = (id) => {
-  return jwt.sign(id, process.env.ACCESS, {
-    expiresIn: '12h',
-  });
-};
-const generateRefreshToken = (id) => {
-  return jwt.sign(id, process.env.REFRESH, {
-    expiresIn: '24h',
-  });
-};
 
 exports.register = async (req, res) => {
   try {

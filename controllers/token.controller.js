@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const { generateAccessToken } = require('../utils/generateToken.js');
 const User = require('../models/index.js').User;
 
 exports.refreshToken = async (req, res) => {
@@ -27,9 +28,7 @@ exports.refreshToken = async (req, res) => {
           };
           return res.status(403).send(response);
         }
-        const accessToken = jwt.sign({ id: req.userId }, process.env.ACCESS, {
-          expiresIn: '12h',
-        });
+        const accessToken = generateAccessToken({ id: req.userId });
         await User.update(
           { access_token: `Bearer ${accessToken}` },
           { where: { id: req.userId } },
