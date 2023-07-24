@@ -28,7 +28,7 @@ module.exports = {
       },
       nik: {
         allowNull: false,
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       refresh_token: {
         type: Sequelize.TEXT,

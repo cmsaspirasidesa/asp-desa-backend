@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
       email: { type: DataTypes.STRING, unique: true },
       password: DataTypes.STRING,
       alamat: DataTypes.STRING,
-      nik: DataTypes.INTEGER,
+      nik: DataTypes.STRING,
       refresh_token: DataTypes.TEXT,
       access_token: DataTypes.TEXT,
       expire: DataTypes.DATE,
