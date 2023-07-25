@@ -1,5 +1,8 @@
+const { Op } = require('sequelize');
+
 const Aspiration = require('../models').Aspiration;
 const Image = require('../models').Image;
+const User = require('../models').User;
 
 exports.addAspiration = async (req, res) => {
   try {
@@ -40,11 +43,68 @@ exports.addAspiration = async (req, res) => {
   }
 };
 
+exports.getAllAspirations = async (req, res) => {
+  try {
+    const { email, nik, status, judul, limit = 10, offset = 0 } = req.query;
+    const where = {};
+
+    if (email) {
+      where['$User.email$'] = email;
+    }
+    if (nik) {
+      where['$User.nik$'] = nik;
+    }
+    if (judul) {
+      where['$Aspiration.judul$'] = {
+        [Op.like]: `%${judul}%`,
+      };
+    }
+    if (status) {
+      where['$Aspiration.status$'] = status;
+    }
+
+    const data = await Aspiration.findAll({
+      include: [
+        { model: Image, attributes: ['url'] },
+        {
+          model: User,
+          attributes: ['id', 'nama', 'email', 'nik'],
+          where,
+        },
+      ],
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+      where: where,
+    });
+
+    const response = {
+      status_response: true,
+      message: 'Daftar aspirasi',
+      errors: null,
+      data,
+    };
+
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
 exports.getAspirationById = async (req, res) => {
   try {
     const { id } = req.params;
     const theAspiration = await Aspiration.findByPk(id, {
-      include: { model: Image, where: { aspirasi_id: id }, attributes: ['url', 'aspirasi_id'] },
+      include: {
+        model: Image,
+        where: { aspirasi_id: id },
+        attributes: ['url', 'aspirasi_id'],
+      },
     });
     if (theAspiration === null || !theAspiration) {
       return res.status(404).send('not found');

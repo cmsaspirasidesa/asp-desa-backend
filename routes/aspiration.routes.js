@@ -10,6 +10,10 @@ router.post(
   verifyToken,
   aspirationController.addAspiration,
 );
+<<<<<<< HEAD
 router.get('/aspirations/:id', aspirationController.getAspirationById);
+=======
+router.get('/aspirations', aspirationController.getAllAspirations);
+>>>>>>> f2928d6e5aba3ba24034193864a28a0a6b673ca5
 
 module.exports = router;

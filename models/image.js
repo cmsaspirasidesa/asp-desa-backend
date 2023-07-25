@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Image.init(
     {
-      url: DataTypes.STRING,
+      url: DataTypes.TEXT,
       aspirasi_id: DataTypes.INTEGER,
     },
     {
