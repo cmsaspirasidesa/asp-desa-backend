@@ -43,8 +43,6 @@ exports.refreshToken = async (req, res) => {
       },
     );
   } catch (error) {
-    console.log(error);
-
     const response = {
       status_response: false,
       message: error.message,

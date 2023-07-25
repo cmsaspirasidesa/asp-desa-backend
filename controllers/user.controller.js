@@ -58,17 +58,19 @@ exports.findUserById = async (req, res) => {
 exports.updateUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { nama, email, password, alamat, nik } = req.body;
+    const { email, password, alamat } = req.body;
     const data = {
-      nama,
       email,
       alamat,
-      nik,
     };
     if (password) {
       data.password = bcrypt.hashSync(password, 8);
     }
-    const user = await User.update(data, { where: { id } });
+    await User.update(data, { where: { id } });
+    const user = await User.findOne({
+      where: { id },
+      attributes: ['id', 'nama', 'email', 'alamat', 'nik'],
+    });
     const response = {
       status_response: true,
       message: 'User berhasil di update',
