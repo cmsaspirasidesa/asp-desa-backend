@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyToken, isAdmin } = require('../middleware/authJWT');
+const { verifyToken, isAdmin, isUser } = require('../middleware/authJWT');
 const router = express.Router();
 const aspirationController = require('../controllers/aspiration.controller');
 const upload = require('../middleware/multer');
@@ -12,7 +12,7 @@ router.post(
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
 router.get('/aspirations/:id', aspirationController.getAspirationById);
-router.get('/useraspirations', verifyToken, aspirationController.getUserAspirations);
+router.get('/useraspirations', verifyToken, isUser, aspirationController.getUserAspirations);
 router.put(
   '/aspirations/:id',
   verifyToken,
