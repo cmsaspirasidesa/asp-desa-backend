@@ -161,7 +161,8 @@ exports.getUserAspirations = async (req, res) => {
   }
 };
 
-exports.updateAspAdmin = async (req, res) => {
+exports.updateAspByAdmin = async (req, res) => {
+
   try {
     const { id } = req.params;
     const { status, komentar } = req.body;
@@ -204,15 +205,64 @@ exports.updateAspAdmin = async (req, res) => {
       }
       data.komentar = komentar;
     }
-    const updatdAsp = await Aspiration.update(data, { where: { id } });
+    const updatedAsp = await Aspiration.update(data, { where: { id } });
 
     const response = {
       status_response: true,
       message: 'Aspirasi berhasil di update',
       errors: null,
-      data: updatdAsp,
+      data: updatedAsp,
     };
 
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
+exports.updateAspByUser = async (req, res) => {
+  try {
+    const { userId } = req;
+    const { id } = req.params;
+
+    const { judul, deskripsi, lokasi } = req.body;
+
+    const aspiration = await Aspiration.findOne({
+      where: {
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+      },
+    });
+    if (!aspiration) {
+      const response = {
+        status_response: false,
+        message: `Aspirasi tidak ditemukan`,
+        errors: 'Not found',
+        data: null,
+      };
+      res.status(404).send(response);
+    }
+    const data = {
+      judul,
+      deskripsi,
+      lokasi,
+    };
+    const updatedAsp = await Aspiration.update(data, {
+      where: {
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+      },
+    });
+    const response = {
+      status_response: true,
+      message: 'Aspirasi berhasil di update',
+      errors: null,
+      data: updatedAsp,
+    };
     res.status(200).send(response);
   } catch (error) {
     const response = {
