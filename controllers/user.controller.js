@@ -3,11 +3,12 @@ const User = require('../models').User;
 const Role = require('../models').Role;
 
 exports.findAllUser = async (req, res) => {
+  const paramQuerySQL = {
+    include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
+    attributes: ['id', 'nama', 'email', 'nik'],
+  };
   try {
-    const users = await User.findAll({
-      include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
-      attributes: ['id', 'nama', 'email', 'nik'],
-    });
+    const users = await User.findAll(paramQuerySQL);
     const response = {
       status_response: true,
       message: 'Semua data user',

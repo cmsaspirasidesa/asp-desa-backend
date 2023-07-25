@@ -11,5 +11,6 @@ router.post(
   aspirationController.addAspiration,
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
+router.get('/aspirations/:id', aspirationController.getAspirationById);
 
 module.exports = router;
