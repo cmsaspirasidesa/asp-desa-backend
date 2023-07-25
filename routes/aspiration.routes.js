@@ -12,7 +12,12 @@ router.post(
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
 router.get('/aspirations/:id', aspirationController.getAspirationById);
-router.get('/useraspirations', verifyToken, isUser, aspirationController.getUserAspirations);
+router.get(
+  '/useraspirations',
+  verifyToken,
+  isUser,
+  aspirationController.getUserAspirations,
+);
 router.put(
   '/aspirations/:id',
   verifyToken,
@@ -24,6 +29,12 @@ router.put(
   verifyToken,
   isUser,
   aspirationController.updateAspByUser,
+);
+router.delete(
+  '/aspirations/:id/user',
+  verifyToken,
+  isUser,
+  aspirationController.deleteAspByUser,
 );
 
 module.exports = router;

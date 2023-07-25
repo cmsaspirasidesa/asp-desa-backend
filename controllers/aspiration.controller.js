@@ -1,5 +1,4 @@
 const { Op } = require('sequelize');
-
 const Aspiration = require('../models').Aspiration;
 const Image = require('../models').Image;
 const User = require('../models').User;
@@ -162,7 +161,6 @@ exports.getUserAspirations = async (req, res) => {
 };
 
 exports.updateAspByAdmin = async (req, res) => {
-
   try {
     const { id } = req.params;
     const { status, komentar } = req.body;
@@ -183,7 +181,8 @@ exports.updateAspByAdmin = async (req, res) => {
 
     const data = { status };
 
-    if (status !== 'Done' || status !== 'Processed') {
+    const validStatus = ['Submitted', 'Processed', 'Done'];
+    if (!validStatus.includes(status)) {
       const response = {
         status_response: false,
         message: `Status aspirasi hanya dapat diubah menjadi 'Processed' atau 'Done'`,
@@ -205,7 +204,11 @@ exports.updateAspByAdmin = async (req, res) => {
       }
       data.komentar = komentar;
     }
-    const updatedAsp = await Aspiration.update(data, { where: { id } });
+    await Aspiration.update(data, { where: { id } });
+
+    const updatedAsp = await Aspiration.findOne({
+      where: { id },
+    });
 
     const response = {
       status_response: true,
@@ -245,14 +248,19 @@ exports.updateAspByUser = async (req, res) => {
         errors: 'Not found',
         data: null,
       };
-      res.status(404).send(response);
+      return res.status(404).send(response);
     }
     const data = {
       judul,
       deskripsi,
       lokasi,
     };
-    const updatedAsp = await Aspiration.update(data, {
+    await Aspiration.update(data, {
+      where: {
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+      },
+    });
+    const updatedAsp = await Aspiration.findOne({
       where: {
         [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
       },
@@ -262,6 +270,56 @@ exports.updateAspByUser = async (req, res) => {
       message: 'Aspirasi berhasil di update',
       errors: null,
       data: updatedAsp,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
+exports.deleteAspByUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { userId } = req;
+    const aspiration = await Aspiration.findOne({
+      where: {
+        [Op.and]: [{ id }, { user_id: userId }],
+      },
+    });
+    if (!aspiration) {
+      const response = {
+        status_response: false,
+        message: `Kamu tidak memiliki aspirasi tersebut`,
+        errors: 'Not found',
+        data: null,
+      };
+      return res.status(404).send(response);
+    }
+    if (aspiration.status !== 'Submitted') {
+      const response = {
+        status_response: false,
+        message: `Hanya bisa menghapus aspirasi dengan status 'Submitted'`,
+        errors: 'Bad request',
+        data: null,
+      };
+      return res.status(400).send(response);
+    }
+    const deletedAsp = await Aspiration.destroy({
+      where: {
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+      },
+    });
+    const response = {
+      status_response: true,
+      message: `Aspirasi berhasil dihapus`,
+      errors: null,
+      data: deletedAsp,
     };
     res.status(200).send(response);
   } catch (error) {
