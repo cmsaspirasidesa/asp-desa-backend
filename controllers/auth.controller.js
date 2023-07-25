@@ -29,25 +29,11 @@ exports.register = async (req, res) => {
       nik,
     });
     const { password, ...others } = await user.dataValues;
-    const accsesToken = 'Bearer ' + generateAccessToken({ id: user.id });
-    const refreshToken = 'Bearer ' + generateRefreshToken({ id: user.id });
-    const currentDate = new Date();
-    const oneDaysFromNow = new Date(currentDate);
-    oneDaysFromNow.setDate(oneDaysFromNow.getDate() + 1);
-
-    const expire = oneDaysFromNow.toISOString().slice(0, 19).replace('T', ' ');
-
-    const data = {
-      access_token: accsesToken,
-      refresh_token: refreshToken,
-      expire,
-    };
-    await User.update(data, { where: { id: user.dataValues.id } });
     const response = {
       status_response: true,
       message: 'Registrasi berhasil',
       errors: null,
-      data: { ...others, accsesToken },
+      data: { ...others },
     };
     res.status(200).json(response);
   } catch (error) {
