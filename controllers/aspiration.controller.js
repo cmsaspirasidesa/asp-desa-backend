@@ -162,7 +162,6 @@ exports.getUserAspirations = async (req, res) => {
 };
 
 exports.updateAspByAdmin = async (req, res) => {
-
   try {
     const { id } = req.params;
     const { status, komentar } = req.body;
