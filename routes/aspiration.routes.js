@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyToken, isAdmin } = require('../middleware/authJWT');
+const { verifyToken, isAdmin, isUser } = require('../middleware/authJWT');
 const router = express.Router();
 const aspirationController = require('../controllers/aspiration.controller');
 const upload = require('../middleware/multer');
@@ -7,7 +7,7 @@ const upload = require('../middleware/multer');
 router.post(
   '/aspirations',
   verifyToken,
-  upload.array('images', 2),
+  upload.array('images', 4),
   aspirationController.addAspiration,
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
@@ -16,7 +16,13 @@ router.put(
   '/aspirations/:id',
   verifyToken,
   isAdmin,
-  aspirationController.updateAspAdmin,
+  aspirationController.updateAspByAdmin,
+);
+router.put(
+  '/aspirations/:id/user',
+  verifyToken,
+  isUser,
+  aspirationController.updateAspByUser,
 );
 
 module.exports = router;
