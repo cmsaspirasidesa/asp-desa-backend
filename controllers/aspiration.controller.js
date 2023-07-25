@@ -65,7 +65,7 @@ exports.getAllAspirations = async (req, res) => {
 
     const data = await Aspiration.findAll({
       include: [
-        { model: Image, attributes: ['url'] },
+        { model: Image, attributes: ['id', 'url'] },
         {
           model: User,
           attributes: ['id', 'nama', 'email', 'nik'],
@@ -115,6 +115,70 @@ exports.getAspirationById = async (req, res) => {
       errors: null,
       data: theAspiration,
     };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
+exports.updateAspAdmin = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status, komentar } = req.body;
+
+    const aspiration = await Aspiration.findOne({
+      where: { id },
+    });
+
+    if (!aspiration) {
+      const notFound = {
+        status_response: false,
+        message: 'Aspirasi tidak di temukan',
+        errors: 'Not Found',
+        data: null,
+      };
+      return res.status(404).send(notFound);
+    }
+
+    const data = { status };
+
+    if (status !== 'Done' || status !== 'Processed') {
+      const response = {
+        status_response: false,
+        message: `Status aspirasi hanya dapat diubah menjadi 'Processed' atau 'Done'`,
+        errors: 'Bad request',
+        data: null,
+      };
+      return res.status(400).send(response);
+    }
+
+    if (status === 'Done') {
+      if (!komentar) {
+        const response = {
+          status_response: false,
+          message: `Aspirasi yang telah 'DONE' harus menyertakan komentar`,
+          errors: 'Bad request',
+          data: null,
+        };
+        return res.status(400).send(response);
+      }
+      data.komentar = komentar;
+    }
+    const updatdAsp = await Aspiration.update(data, { where: { id } });
+
+    const response = {
+      status_response: true,
+      message: 'Aspirasi berhasil di update',
+      errors: null,
+      data: updatdAsp,
+    };
+
     res.status(200).send(response);
   } catch (error) {
     const response = {
