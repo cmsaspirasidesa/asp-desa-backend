@@ -127,7 +127,42 @@ exports.getAspirationById = async (req, res) => {
   }
 };
 
+exports.getUserAspirations = async (req, res) => {
+  try {
+    const id = req.userId;
+    const theAspirations = await Aspiration.findAll({
+      include: [
+        { model: Image, attributes: ['id', 'url'] },
+        {
+          model: User,
+          attributes: ['id', 'nama', 'email', 'nik'],
+        },
+      ],
+      where: { user_id: id },
+    });
+    if (theAspirations === null || !theAspirations) {
+      return res.status(404).send('not found');
+    }
+    const response = {
+      status_response: true,
+      message: `Aspirasi user`,
+      errors: null,
+      data: theAspirations,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
 exports.updateAspByAdmin = async (req, res) => {
+
   try {
     const { id } = req.params;
     const { status, komentar } = req.body;

@@ -12,6 +12,7 @@ router.post(
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
 router.get('/aspirations/:id', aspirationController.getAspirationById);
+router.get('/useraspirations', verifyToken, isUser, aspirationController.getUserAspirations);
 router.put(
   '/aspirations/:id',
   verifyToken,
