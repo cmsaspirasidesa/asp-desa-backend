@@ -30,6 +30,9 @@ module.exports = {
       komentar: {
         type: Sequelize.STRING,
       },
+      email: {
+        type: Sequelize.STRING,
+      },
       user_id: {
         type: Sequelize.INTEGER,
       },
@@ -56,6 +59,6 @@ module.exports = {
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Aspirations');
-    await queryInterface.removeConstraint('Users', 'fk_role_id');
+    await queryInterface.removeConstraint('Users', 'fk_user_id');
   },
 };

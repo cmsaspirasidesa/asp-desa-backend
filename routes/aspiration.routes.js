@@ -8,7 +8,12 @@ router.post(
   '/aspirations',
   verifyToken,
   upload.array('images', 4),
-  aspirationController.addAspiration,
+  aspirationController.addAspByUser,
+);
+router.post(
+  '/aspirations/guest',
+  upload.array('images', 4),
+  aspirationController.addAspByGuest,
 );
 router.get('/aspirations', aspirationController.getAllAspirations);
 router.get('/aspirations/:id', aspirationController.getAspirationById);

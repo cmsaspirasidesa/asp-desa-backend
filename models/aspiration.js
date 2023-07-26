@@ -27,6 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 'Submitted',
       },
       komentar: DataTypes.STRING,
+      email: DataTypes.STRING,
       user_id: DataTypes.INTEGER,
     },
     {

@@ -1,22 +1,21 @@
+/* eslint-disable camelcase */
 'use strict';
 const { fakerID_ID } = require('@faker-js/faker');
 const bcrypt = require('bcrypt');
 
-const allUser = []
+const allUser = [];
 
-const users = [...Array(50)].map((user, index) => (
-  {
-    // id: index + 3,
-    nama: fakerID_ID.person.fullName(),
-    email: fakerID_ID.internet.email(),
-    password: bcrypt.hashSync('123', 8),
-    alamat: fakerID_ID.location.streetAddress(),
-    nik: '3207892211' + (index + 1),
-    role_id: 1,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
-));
+const users = [...Array(50)].map((user, index) => ({
+  // id: index + 3,
+  nama: fakerID_ID.person.fullName(),
+  email: fakerID_ID.internet.email(),
+  password: bcrypt.hashSync('123', 8),
+  alamat: fakerID_ID.location.streetAddress(),
+  nik: '3207892211' + (index + 1),
+  role_id: 1,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+}));
 
 const testUser = [
   {
@@ -40,10 +39,10 @@ const testUser = [
     role_id: 2,
     createdAt: new Date(),
     updatedAt: new Date(),
-  }
-]
+  },
+];
 
-allUser.push(...testUser, ...users)
+allUser.push(...testUser, ...users);
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
