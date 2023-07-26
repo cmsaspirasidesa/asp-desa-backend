@@ -3,11 +3,70 @@ const Aspiration = require('../models').Aspiration;
 const Image = require('../models').Image;
 const User = require('../models').User;
 
-exports.addAspiration = async (req, res) => {
+exports.addAspByUser = async (req, res) => {
   try {
     const { judul, deskripsi, lokasi } = req.body;
+    if (!judul || !deskripsi || !lokasi) {
+      const response = {
+        status_response: false,
+        message: 'Data harus memiliki judul, deskripsi, dan lokasi',
+        errors: 'Bad request',
+        data: null,
+      };
+      res.status(400).send(response);
+    }
     const data = {
       user_id: req.userId,
+      email: req.userEmail,
+      judul,
+      deskripsi,
+      lokasi,
+    };
+    const aspiration = await Aspiration.create(data);
+    const image = [];
+
+    for (let i = 0; i < req.files.length; i++) {
+      const link = `${req.protocol}://${req.get('host')}/${
+        req.files[i].filename
+      }`;
+
+      await Image.create({ aspirasi_id: aspiration.id, url: link });
+
+      image.push(link);
+    }
+    const response = {
+      status_response: true,
+      message: 'Aspirasi berhasil ditambahkan',
+      errors: null,
+      data: { ...aspiration.dataValues, image },
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};
+
+exports.addAspByGuest = async (req, res) => {
+  try {
+    const { judul, deskripsi, lokasi, email } = req.body;
+    if (!judul || !deskripsi || !lokasi || !email) {
+      const response = {
+        status_response: false,
+        message: 'Data harus memiliki judul, deskripsi, lokasi, dan email',
+        errors: 'Bad request',
+        data: null,
+      };
+      return res.status(400).send(response);
+    }
+    const data = {
+      user_id: null,
+      email,
       judul,
       deskripsi,
       lokasi,
@@ -69,6 +128,7 @@ exports.getAllAspirations = async (req, res) => {
           model: User,
           attributes: ['id', 'nama', 'email', 'nik'],
           where,
+          required: false,
         },
       ],
       limit: parseInt(limit),
