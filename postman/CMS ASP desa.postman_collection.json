@@ -1,0 +1,563 @@
+{
+	"info": {
+		"_postman_id": "2518f14c-a1f5-4b1c-98e4-36ac5024cd62",
+		"name": "CMS ASP desa",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "nama",
+									"value": "test",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "test4@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								},
+								{
+									"key": "alamat",
+									"value": "jalan test",
+									"type": "text"
+								},
+								{
+									"key": "nik",
+									"value": "1234567890",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "user2@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "123",
+									"type": "text"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MywiaWF0IjoxNjkwMjQ4NzYxLCJleHAiOjE2OTAyOTE5NjF9.vpZPnav_tZLN8Rqy1pRcpprQljavU0EyGgcNx7AtLiw",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Get All User [ADMIN]",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"type": "default"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User [ADMIN]",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "alamat",
+									"value": "coba update",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/users/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjc0MDQxLCJleHAiOjE2OTAzMTcyNDF9.YlaIx5ml2BQFXtRYgPJKB45uXbmFkJLOIWKMQ5nMt_0",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjc0MDQxLCJleHAiOjE2OTAzMTcyNDF9.YlaIx5ml2BQFXtRYgPJKB45uXbmFkJLOIWKMQ5nMt_0",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "userupdated@gmail.com",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User [ADMIN]",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/users/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"users",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Token",
+			"item": [
+				{
+					"name": "Token",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMDg1NTI1LCJleHAiOjE2OTAxMjg3MjV9.DPHZnfpYQZ6sSWE6FCel7TxnOeFz4JZBQABlvU_zDqo",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/token",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Aspiration",
+			"item": [
+				{
+					"name": "Add Aspirasi",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjcxMjM2LCJleHAiOjE2OTAzMTQ0MzZ9.8e-8KVSSt85rpNOxp5KpAzefLmFPcjyS6_zvq6jK56U",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/Alur ErrorSolved.drawio.png"
+								},
+								{
+									"key": "judul",
+									"value": "judul by user2",
+									"type": "default"
+								},
+								{
+									"key": "deskripsi",
+									"value": "deskripsi oleh user 2",
+									"type": "default"
+								},
+								{
+									"key": "lokasi",
+									"value": "lokasi dimana",
+									"type": "default"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper.jpg"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (2).jpg"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (3).jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Aspirations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations?email=user1@gmail.com",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "user1@gmail.com"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Detail Aspiration",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Asp [ADMIN]",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwNjI4LCJleHAiOjE2OTAzMTM4Mjh9.NK-e5yieTVGj6AM4Gkn6Jp-rErhn-blE93jzh-NaNqU",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "status",
+									"value": "Done",
+									"type": "text"
+								},
+								{
+									"key": "komentar",
+									"value": "saya ingin berkomentar",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Asp [USER]",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjcwNTU2LCJleHAiOjE2OTAzMTM3NTZ9.CzU88cAe3AgO71OtOag7E0ThkPXvwfoVMoL3hTRSC8k",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "status",
+									"value": "",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "komentar",
+									"value": "bagus",
+									"type": "default",
+									"disabled": true
+								},
+								{
+									"key": "judul",
+									"value": "updated judul baru",
+									"type": "default"
+								},
+								{
+									"key": "deskripsi",
+									"value": "updated descripsi, deskripsi baru",
+									"type": "default"
+								},
+								{
+									"key": "lokasi",
+									"value": "dimanapun lokasinya saya yakin",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/10/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"10",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Aspiration [USER]",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjcxMjM2LCJleHAiOjE2OTAzMTQ0MzZ9.8e-8KVSSt85rpNOxp5KpAzefLmFPcjyS6_zvq6jK56U",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/11/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"11",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Aspiration by User Id",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
