@@ -163,7 +163,7 @@ exports.getUserAspirations = async (req, res) => {
 exports.updateAspByAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const { status, komentar } = req.body;
+    const { komentar } = req.body;
 
     const aspiration = await Aspiration.findOne({
       where: { id },
@@ -179,31 +179,31 @@ exports.updateAspByAdmin = async (req, res) => {
       return res.status(404).send(notFound);
     }
 
-    const data = { status };
+    const data = {};
 
-    const validStatus = ['Submitted', 'Processed', 'Done'];
-    if (!validStatus.includes(status)) {
+    if (komentar) {
+      data.komentar = komentar;
+    }
+
+    if (aspiration.status === 'Submitted') {
+      data.status = 'Processed';
+    } else if (aspiration.status === 'Processed') {
+      data.status = 'Done';
+    }
+
+    if (
+      (data.status === 'Done' && !komentar) ||
+      (data.status === 'Done' && !data.komentar)
+    ) {
       const response = {
         status_response: false,
-        message: `Status aspirasi hanya dapat diubah menjadi 'Processed' atau 'Done'`,
+        message: 'Harus menyertakan komentar',
         errors: 'Bad request',
         data: null,
       };
       return res.status(400).send(response);
     }
 
-    if (status === 'Done') {
-      if (!komentar) {
-        const response = {
-          status_response: false,
-          message: `Aspirasi yang telah 'DONE' harus menyertakan komentar`,
-          errors: 'Bad request',
-          data: null,
-        };
-        return res.status(400).send(response);
-      }
-      data.komentar = komentar;
-    }
     await Aspiration.update(data, { where: { id } });
 
     const updatedAsp = await Aspiration.findOne({
