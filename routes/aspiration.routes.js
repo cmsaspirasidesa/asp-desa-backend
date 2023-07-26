@@ -32,7 +32,6 @@ router.put(
 router.put(
   '/aspirations/:id/user',
   verifyToken,
-  isUser,
   aspirationController.updateAspByUser,
 );
 router.delete(

@@ -18,6 +18,7 @@ exports.addAspByUser = async (req, res) => {
     const data = {
       user_id: req.userId,
       email: req.userEmail,
+      nama: req.username,
       judul,
       deskripsi,
       lokasi,
@@ -54,17 +55,19 @@ exports.addAspByUser = async (req, res) => {
 
 exports.addAspByGuest = async (req, res) => {
   try {
-    const { judul, deskripsi, lokasi, email } = req.body;
-    if (!judul || !deskripsi || !lokasi || !email) {
+    const { judul, deskripsi, lokasi, email, nama } = req.body;
+    if (!judul || !deskripsi || !lokasi || !email || !nama) {
       const response = {
         status_response: false,
-        message: 'Data harus memiliki judul, deskripsi, lokasi, dan email',
+        message:
+          'Data harus memiliki judul, deskripsi, lokasi, nama, dan email',
         errors: 'Bad request',
         data: null,
       };
       return res.status(400).send(response);
     }
     const data = {
+      nama,
       user_id: null,
       email,
       judul,
@@ -251,10 +254,7 @@ exports.updateAspByAdmin = async (req, res) => {
       data.status = 'Done';
     }
 
-    if (
-      (data.status === 'Done' && !komentar) ||
-      (data.status === 'Done' && !data.komentar)
-    ) {
+    if (!komentar && data.status === 'Done' && !aspiration.komentar) {
       const response = {
         status_response: false,
         message: 'Harus menyertakan komentar',
@@ -268,6 +268,7 @@ exports.updateAspByAdmin = async (req, res) => {
 
     const updatedAsp = await Aspiration.findOne({
       where: { id },
+      include: [{ model: Image, attributes: ['id', 'url'] }],
     });
 
     const response = {
@@ -298,7 +299,7 @@ exports.updateAspByUser = async (req, res) => {
 
     const aspiration = await Aspiration.findOne({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+        [Op.and]: [{ id }, { user_id: userId }],
       },
     });
     if (!aspiration) {
@@ -310,6 +311,16 @@ exports.updateAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
+    if (aspiration.status !== 'Submitted') {
+      const response = {
+        status_response: false,
+        message: `Hanya bisa mengupdate yang berstatus 'Submitted'`,
+        errors: 'Not found',
+        data: null,
+      };
+      return res.status(400).send(response);
+    }
+
     const data = {
       judul,
       deskripsi,
@@ -324,6 +335,7 @@ exports.updateAspByUser = async (req, res) => {
       where: {
         [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
       },
+      include: [{ model: Image, attributes: ['id', 'url'] }],
     });
     const response = {
       status_response: true,
