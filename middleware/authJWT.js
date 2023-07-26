@@ -62,6 +62,7 @@ exports.verifyToken = (req, res, next) => {
     req.userId = decoded.id;
     req.userRole = user.role_id;
     req.userEmail = user.email;
+    req.username = user.nama;
     next();
   });
 };

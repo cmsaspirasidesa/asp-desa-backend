@@ -31,6 +31,11 @@ module.exports = {
         type: Sequelize.STRING,
       },
       email: {
+        allowNull: false,
+        type: Sequelize.STRING,
+      },
+      nama: {
+        allowNull: false,
         type: Sequelize.STRING,
       },
       user_id: {
