@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
     // to provide user data
     const displayUser = await User.findOne({
       where: { email: email },
-      attributes: ['nama', 'email', 'access_token', 'refresh_token', 'role_id'],
+      attributes: ['id', 'nama', 'email', 'access_token', 'refresh_token', 'role_id'],
       include: { model: Role, attributes: ['nama_role'] },
     });
     // setup response
