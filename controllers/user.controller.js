@@ -1,11 +1,22 @@
 const bcrypt = require('bcrypt');
+const { Op } = require('sequelize');
 const User = require('../models').User;
 const Role = require('../models').Role;
 
 exports.findAllUser = async (req, res) => {
+  //setting up the query
+  const { search } = req.query;
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
     attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
+    where: {
+      [Op.or]: [
+        { nama: { [Op.like]: `%${search}%` } },
+        { email: { [Op.like]: `%${search}%` } },
+        { nik: { [Op.like]: `%${search}%` } },
+        { alamat: { [Op.like]: `%${search}%` } },
+      ],
+    },
     limit: req.pageLimit,
     offset: req.pageOffset,
   };
