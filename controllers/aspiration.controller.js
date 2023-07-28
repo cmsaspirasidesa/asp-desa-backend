@@ -452,3 +452,45 @@ ORDER BY
     res.status(500).send(response);
   }
 };
+
+exports.getStatPerWeek = async (req, res) => {
+  try {
+    const query = `
+SELECT
+    DATE(MIN(startDate)) AS startDate,
+    DATE(MAX(endDate)) AS endDate,
+    COUNT(*) AS total_aspirations
+FROM (
+    SELECT
+        *,
+        DATE_SUB(createdAt, INTERVAL (DAYOFWEEK(createdAt) - 1) DAY) AS startDate,
+        DATE_ADD(createdAt, INTERVAL (7 - DAYOFWEEK(createdAt)) DAY) AS endDate
+    FROM
+        Aspirations
+) AS subquery
+GROUP BY
+    WEEK(createdAt)
+ORDER BY
+    startDate ASC;
+    `;
+
+    const stat = await Aspiration.sequelize.query(query, {
+      type: Sequelize.QueryTypes.SELECT,
+    });
+    const response = {
+      status_response: true,
+      message: `Statistik aspirasi perminggu`,
+      errors: null,
+      data: stat,
+    };
+    res.status(200).send(response);
+  } catch (error) {
+    const response = {
+      status_response: false,
+      message: error.message,
+      errors: error,
+      data: null,
+    };
+    res.status(500).send(response);
+  }
+};

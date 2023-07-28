@@ -45,4 +45,9 @@ router.get(
   aspirationController.getStatPerMount,
 );
 
+router.get(
+  '/aspirations/statistics/per_week',
+  aspirationController.getStatPerWeek,
+);
+
 module.exports = router;
