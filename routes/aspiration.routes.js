@@ -40,5 +40,9 @@ router.delete(
   isUser,
   aspirationController.deleteAspByUser,
 );
+router.get(
+  '/aspirations/statistics/per_month',
+  aspirationController.getStatPerMount,
+);
 
 module.exports = router;
