@@ -6,6 +6,8 @@ exports.findAllUser = async (req, res) => {
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
     attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
+    limit: req.pageLimit,
+    offset: req.pageOffset,
   };
   try {
     const users = await User.findAll(paramQuerySQL);
