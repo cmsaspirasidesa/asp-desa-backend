@@ -6,7 +6,7 @@ const { existingUser } = require('../middleware/isUserExist');
 const { paginate } = require('../middleware/paginate');
 const router = express.Router();
 
-router.get('/users', verifyToken, paginate, userController.findAllUser);
+router.get('/users', paginate, userController.findAllUser);
 router.get('/users/:id', existingUser, userController.findUserById);
 router.put(
   '/users/:id',
