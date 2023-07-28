@@ -408,33 +408,31 @@ exports.deleteAspByUser = async (req, res) => {
 exports.getStatPerMount = async (req, res) => {
   try {
     const query = `
-     SELECT
+  SELECT
     months.month AS month,
     IFNULL(COUNT(Aspirations.id), 0) AS total_aspirations
-FROM
-    (SELECT 'January' AS month
-     UNION SELECT 'February'
-     UNION SELECT 'March'
-     UNION SELECT 'April'
-     UNION SELECT 'May'
-     UNION SELECT 'June'
-     UNION SELECT 'July'
-     UNION SELECT 'August'
-     UNION SELECT 'September'
-     UNION SELECT 'October'
-     UNION SELECT 'November'
-     UNION SELECT 'December') AS months
-LEFT JOIN
+  FROM
+    (SELECT 'January' AS month UNION SELECT 'February' UNION SELECT 'March'
+     UNION SELECT 'April' UNION SELECT 'May' UNION SELECT 'June'
+     UNION SELECT 'July' UNION SELECT 'August' UNION SELECT 'September'
+     UNION SELECT 'October' UNION SELECT 'November' UNION SELECT 'December'
+    ) AS months
+  LEFT JOIN
     Aspirations ON months.month = DATE_FORMAT(Aspirations.createdAt, '%M')
-GROUP BY
+      AND YEAR(Aspirations.createdAt) = :currentYear
+  GROUP BY
     months.month
-ORDER BY
+  ORDER BY
     MONTH(STR_TO_DATE(months.month, '%M'));
-    `;
+`;
+
+    const currentYear = new Date().getFullYear();
 
     const stat = await Aspiration.sequelize.query(query, {
       type: Sequelize.QueryTypes.SELECT,
+      replacements: { currentYear },
     });
+
     const response = {
       status_response: true,
       message: `Statistik aspirasi perbulan`,
