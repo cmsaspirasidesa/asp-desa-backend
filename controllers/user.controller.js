@@ -5,7 +5,7 @@ const Role = require('../models').Role;
 exports.findAllUser = async (req, res) => {
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
-    attributes: ['id', 'nama', 'email', 'nik'],
+    attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
   };
   try {
     const users = await User.findAll(paramQuerySQL);
