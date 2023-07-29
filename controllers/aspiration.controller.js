@@ -117,9 +117,7 @@ exports.getAllAspirations = async (req, res) => {
       orderBy = 'DESC',
     } = req.query;
     const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
-    console.log({ offset });
     const where = {};
-    console.log(limit);
     if (email) {
       where['$Aspiration.email$'] = {
         [Op.like]: `${email}%`,
@@ -167,7 +165,6 @@ exports.getAllAspirations = async (req, res) => {
     };
     res.status(200).send(response);
   } catch (error) {
-    console.log(error);
     const response = {
       status_response: false,
       message: error.message,
