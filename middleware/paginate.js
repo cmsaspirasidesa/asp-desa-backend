@@ -22,10 +22,6 @@ exports.paginate = (req, res, next) => {
     req.pageLimit = limit;
     req.pageOffset = offset;
   }
-  console.log(req.pageLimit);
-  console.log(req.pageOffset);
-  console.log(limit);
-  console.log(offset);
-
+  req.pageNumber = parseInt(page.number);
   next();
 };
