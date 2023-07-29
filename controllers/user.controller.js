@@ -4,8 +4,7 @@ const User = require('../models').User;
 const Role = require('../models').Role;
 
 exports.findAllUser = async (req, res) => {
-  //setting up the query
-  const { search } = req.query;
+  const { search = '', orderBy = 'DESC', item = 'createdAt' } = req.query;
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
     attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
@@ -19,6 +18,7 @@ exports.findAllUser = async (req, res) => {
     },
     limit: req.pageLimit,
     offset: req.pageOffset,
+    order: [[item, orderBy]],
   };
   try {
     const users = await User.findAll(paramQuerySQL);
