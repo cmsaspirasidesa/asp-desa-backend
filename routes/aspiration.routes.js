@@ -20,7 +20,6 @@ router.get('/aspirations/:id', aspirationController.getAspirationById);
 router.get(
   '/useraspirations',
   verifyToken,
-  isUser,
   aspirationController.getUserAspirations,
 );
 router.put(
