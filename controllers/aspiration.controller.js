@@ -111,12 +111,13 @@ exports.getAllAspirations = async (req, res) => {
       nik,
       status,
       judul,
-      limit = 10,
+      limit = '10',
       page = '1',
       item = 'createdAt',
       orderBy = 'DESC',
     } = req.query;
-    const offset = (parseInt(page) - 1) * 10 || 0;
+    const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
+    console.log({ offset });
     const where = {};
     console.log(limit);
     if (email) {
