@@ -113,6 +113,7 @@ exports.getAllAspirations = async (req, res) => {
       judul,
       limit = 10,
       offset = 0,
+      item = 'createdAt',
       orderBy = 'DESC',
     } = req.query;
     const where = {};
@@ -147,7 +148,7 @@ exports.getAllAspirations = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset),
       where: where,
-      order: [['createdAt', orderBy]],
+      order: [[item, orderBy]],
     });
 
     const response = {
