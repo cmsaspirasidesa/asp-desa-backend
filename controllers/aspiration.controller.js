@@ -112,12 +112,13 @@ exports.getAllAspirations = async (req, res) => {
       status,
       judul,
       limit = 10,
-      offset = 0,
+      page = '1',
       item = 'createdAt',
       orderBy = 'DESC',
     } = req.query;
+    const offset = (parseInt(page) - 1) * 10 || 0;
     const where = {};
-
+    console.log(limit);
     if (email) {
       where['$Aspiration.email$'] = {
         [Op.like]: `${email}%`,
@@ -146,20 +147,26 @@ exports.getAllAspirations = async (req, res) => {
         },
       ],
       limit: parseInt(limit),
-      offset: parseInt(offset),
+      offset: offset,
       where: where,
       order: [[item, orderBy]],
     });
-
+    const total = await Aspiration.count({});
     const response = {
       status_response: true,
       message: 'Daftar aspirasi',
       errors: null,
-      data,
+      data: {
+        data,
+        total,
+        page: parseInt(page),
+        per_page: parseInt(limit),
+        total_page: Math.ceil(total / limit),
+      },
     };
-
     res.status(200).send(response);
   } catch (error) {
+    console.log(error);
     const response = {
       status_response: false,
       message: error.message,
