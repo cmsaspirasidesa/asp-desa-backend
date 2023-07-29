@@ -106,11 +106,21 @@ exports.addAspByGuest = async (req, res) => {
 
 exports.getAllAspirations = async (req, res) => {
   try {
-    const { email, nik, status, judul, limit = 10, offset = 0 } = req.query;
+    const {
+      email,
+      nik,
+      status,
+      judul,
+      limit = 10,
+      offset = 0,
+      orderBy = 'DESC',
+    } = req.query;
     const where = {};
 
     if (email) {
-      where['$User.email$'] = email;
+      where['$Aspiration.email$'] = {
+        [Op.like]: `${email}%`,
+      };
     }
     if (nik) {
       where['$User.nik$'] = nik;
@@ -137,6 +147,7 @@ exports.getAllAspirations = async (req, res) => {
       limit: parseInt(limit),
       offset: parseInt(offset),
       where: where,
+      order: [['createdAt', orderBy]],
     });
 
     const response = {
@@ -201,6 +212,7 @@ exports.getUserAspirations = async (req, res) => {
         },
       ],
       where: { user_id: id },
+      order: [['createdAt', 'DESC']],
     });
     if (theAspirations === null || !theAspirations) {
       return res.status(404).send('not found');
