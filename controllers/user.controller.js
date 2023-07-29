@@ -18,15 +18,32 @@ exports.findAllUser = async (req, res) => {
     },
     limit: req.pageLimit,
     offset: req.pageOffset,
-    order: [[item, orderBy]],
+    // order: [[item, orderBy]],
   };
   try {
+    const totalUsers = await User.count({
+      where: {
+        role_id: 1,
+        [Op.or]: [
+          { nama: { [Op.like]: `%${search}%` } },
+          { email: { [Op.like]: `%${search}%` } },
+          { nik: { [Op.like]: `%${search}%` } },
+          { alamat: { [Op.like]: `%${search}%` } },
+        ],
+      },
+    });
     const users = await User.findAll(paramQuerySQL);
+    let pageNumber = req.pageNumber;
+    let totalPages = Math.ceil(totalUsers / req.pageLimit);
     const response = {
       status_response: true,
       message: 'Semua data user',
       errors: null,
       data: users,
+      total: totalUsers,
+      page: pageNumber,
+      per_page: req.pageLimit,
+      total_pages: totalPages,
     };
     res.status(200).json(response);
   } catch (error) {
