@@ -5,32 +5,26 @@ const Role = require('../models').Role;
 
 exports.findAllUser = async (req, res) => {
   const { search = '', orderBy = 'DESC', item = 'createdAt' } = req.query;
+  const handleWhere = {
+    role_id: 1,
+    [Op.or]: [
+      { nama: { [Op.like]: `%${search}%` } },
+      { email: { [Op.like]: `%${search}%` } },
+      { nik: { [Op.like]: `%${search}%` } },
+      { alamat: { [Op.like]: `%${search}%` } },
+    ],
+  };
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
     attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
-    where: {
-      [Op.or]: [
-        { nama: { [Op.like]: `%${search}%` } },
-        { email: { [Op.like]: `%${search}%` } },
-        { nik: { [Op.like]: `%${search}%` } },
-        { alamat: { [Op.like]: `%${search}%` } },
-      ],
-    },
+    where: handleWhere,
     limit: req.pageLimit,
     offset: req.pageOffset,
     // order: [[item, orderBy]],
   };
   try {
     const totalUsers = await User.count({
-      where: {
-        role_id: 1,
-        [Op.or]: [
-          { nama: { [Op.like]: `%${search}%` } },
-          { email: { [Op.like]: `%${search}%` } },
-          { nik: { [Op.like]: `%${search}%` } },
-          { alamat: { [Op.like]: `%${search}%` } },
-        ],
-      },
+      where: handleWhere,
     });
     const users = await User.findAll(paramQuerySQL);
     let pageNumber = req.pageNumber;
