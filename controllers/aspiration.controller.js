@@ -13,7 +13,7 @@ exports.addAspByUser = async (req, res) => {
         errors: 'Bad request',
         data: null,
       };
-      res.status(400).send(response);
+      return res.status(400).send(response);
     }
     const data = {
       user_id: req.userId,
@@ -432,16 +432,22 @@ exports.getStatPerMount = async (req, res) => {
 
     const currentYear = new Date().getFullYear();
 
-    const stat = await Aspiration.sequelize.query(query, {
+    const statistic = await Aspiration.sequelize.query(query, {
       type: Sequelize.QueryTypes.SELECT,
       replacements: { currentYear },
     });
-
+    const month = [];
+    const stat = [];
+    for (let i = 0; i < statistic.length; i++) {
+      month.push(statistic[i].month);
+      stat.push(statistic[i].total_aspirations);
+    }
+    const data = { month, stat };
     const response = {
       status_response: true,
       message: `Statistik aspirasi perbulan`,
       errors: null,
-      data: stat,
+      data,
     };
     res.status(200).send(response);
   } catch (error) {

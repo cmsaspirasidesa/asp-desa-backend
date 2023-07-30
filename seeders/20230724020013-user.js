@@ -36,7 +36,7 @@ const testUser = [
     password: bcrypt.hashSync('123', 8),
     alamat: fakerID_ID.location.streetAddress(),
     nik: '43207892211',
-    role_id: 2,
+    role_id: 1,
     createdAt: new Date(),
     updatedAt: new Date(),
   },
