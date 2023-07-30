@@ -107,7 +107,7 @@ exports.addAspByGuest = async (req, res) => {
 exports.getAllAspirations = async (req, res) => {
   try {
     const {
-      search,
+      search = '',
       limit = '10',
       page = '1',
       item = 'createdAt',
