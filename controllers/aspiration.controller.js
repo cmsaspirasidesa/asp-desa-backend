@@ -168,7 +168,6 @@ exports.getAspirationById = async (req, res) => {
     const theAspiration = await Aspiration.findByPk(id, {
       include: {
         model: Image,
-        where: { aspirasi_id: id },
         attributes: ['url', 'aspirasi_id'],
       },
     });
