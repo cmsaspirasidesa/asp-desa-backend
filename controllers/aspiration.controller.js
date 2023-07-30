@@ -107,33 +107,13 @@ exports.addAspByGuest = async (req, res) => {
 exports.getAllAspirations = async (req, res) => {
   try {
     const {
-      email,
-      nik,
-      status,
-      judul,
+      search,
       limit = '10',
       page = '1',
       item = 'createdAt',
       orderBy = 'DESC',
     } = req.query;
     const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
-    const where = {};
-    if (email) {
-      where['$Aspiration.email$'] = {
-        [Op.like]: `${email}%`,
-      };
-    }
-    if (nik) {
-      where['$User.nik$'] = nik;
-    }
-    if (judul) {
-      where['$Aspiration.judul$'] = {
-        [Op.like]: `%${judul}%`,
-      };
-    }
-    if (status) {
-      where['$Aspiration.status$'] = status;
-    }
 
     const data = await Aspiration.findAll({
       include: [
@@ -141,13 +121,20 @@ exports.getAllAspirations = async (req, res) => {
         {
           model: User,
           attributes: ['id', 'nama', 'email', 'nik'],
-          where,
+          where: {
+            [Op.or]: [{ nik: { [Op.like]: `%${search}%` } }],
+          },
           required: false,
         },
       ],
       limit: parseInt(limit),
       offset: offset,
-      where: where,
+      where: {
+        [Op.or]: [
+          { email: { [Op.like]: `%${search}%` } },
+          { judul: { [Op.like]: `%${search}%` } },
+        ],
+      },
       order: [[item, orderBy]],
     });
     const total = await Aspiration.count({});
