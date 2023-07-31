@@ -23,7 +23,7 @@
 								},
 								{
 									"key": "email",
-									"value": "test4@gmail.com",
+									"value": "email@gmail.com",
 									"type": "text"
 								},
 								{
@@ -66,19 +66,30 @@
 					"name": "Login",
 					"request": {
 						"method": "POST",
-						"header": [],
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"type": "default"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "default"
+							}
+						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
 									"key": "email",
-									"value": "user2@gmail.com",
-									"type": "text"
+									"value": "admin1@gmail.com",
+									"type": "default"
 								},
 								{
 									"key": "password",
 									"value": "123",
-									"type": "text"
+									"type": "default"
 								}
 							],
 							"options": {
@@ -138,7 +149,7 @@
 						"header": [
 							{
 								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwNzcxMDg5LCJleHAiOjE2OTA4MTQyODl9.pwV54bwsusoYs2XSehMoUoGUUqrH9d4LwyoPl_kCUYE",
 								"type": "default"
 							},
 							{
@@ -148,7 +159,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:{{port}}/users",
+							"raw": "http://localhost:{{port}}/users?page[size]=10&page[number]=2&item=id&orderBy=ASC",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -156,6 +167,24 @@
 							"port": "{{port}}",
 							"path": [
 								"users"
+							],
+							"query": [
+								{
+									"key": "page[size]",
+									"value": "10"
+								},
+								{
+									"key": "page[number]",
+									"value": "2"
+								},
+								{
+									"key": "item",
+									"value": "id"
+								},
+								{
+									"key": "orderBy",
+									"value": "ASC"
+								}
 							]
 						}
 					},
@@ -168,7 +197,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwNTI4MDMxLCJleHAiOjE2OTA1NzEyMzF9.QdQT9f83vrQv2Lz6j6DlSB4M8lBBwxdep_SB_owRQKI",
 								"type": "default"
 							}
 						],
@@ -177,13 +206,18 @@
 							"urlencoded": [
 								{
 									"key": "alamat",
-									"value": "coba update",
+									"value": "update lagi",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "lagi@gmail.com",
 									"type": "default"
 								}
 							]
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/users/3",
+							"raw": "http://localhost:{{port}}/users/4",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -191,7 +225,7 @@
 							"port": "{{port}}",
 							"path": [
 								"users",
-								"3"
+								"4"
 							]
 						}
 					},
@@ -199,6 +233,9 @@
 				},
 				{
 					"name": "Get Profile",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
 					"request": {
 						"method": "GET",
 						"header": [
@@ -208,6 +245,10 @@
 								"type": "default"
 							}
 						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": []
+						},
 						"url": {
 							"raw": "http://localhost:{{port}}/profile",
 							"protocol": "http",
@@ -319,49 +360,13 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjcxMjM2LCJleHAiOjE2OTAzMTQ0MzZ9.8e-8KVSSt85rpNOxp5KpAzefLmFPcjyS6_zvq6jK56U",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjkwNzI4NDg5LCJleHAiOjE2OTA3NzE2ODl9.HSCPwVPBcBmfiRBGubhvHYsVz8XwoONa3xtE3ytCH8E",
 								"type": "default"
 							}
 						],
 						"body": {
-							"mode": "formdata",
-							"formdata": [
-								{
-									"key": "images",
-									"type": "file",
-									"src": "/home/ryanos/Downloads/Alur ErrorSolved.drawio.png"
-								},
-								{
-									"key": "judul",
-									"value": "judul by user2",
-									"type": "default"
-								},
-								{
-									"key": "deskripsi",
-									"value": "deskripsi oleh user 2",
-									"type": "default"
-								},
-								{
-									"key": "lokasi",
-									"value": "lokasi dimana",
-									"type": "default"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper.jpg"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (2).jpg"
-								},
-								{
-									"key": "images",
-									"type": "file",
-									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (3).jpg"
-								}
-							]
+							"mode": "urlencoded",
+							"urlencoded": []
 						},
 						"url": {
 							"raw": "http://localhost:{{port}}/aspirations",
@@ -378,24 +383,130 @@
 					"response": []
 				},
 				{
-					"name": "Get All Aspirations",
+					"name": "Add Aspirasi by Guest",
 					"request": {
-						"method": "GET",
-						"header": [],
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMzU1Mjk1LCJleHAiOjE2OTAzOTg0OTV9.SOWOk_pjVvw9TUstCT8RR3Gv46QUOFP0R6dOCaG9-O8",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "judul",
+									"value": "judul by user2",
+									"type": "default"
+								},
+								{
+									"key": "deskripsi",
+									"value": "deskripsi oleh user 2",
+									"type": "default"
+								},
+								{
+									"key": "lokasi",
+									"value": "lokasi dimana",
+									"type": "default"
+								},
+								{
+									"key": "email",
+									"value": "email@gmail.com",
+									"type": "default"
+								},
+								{
+									"key": "nama",
+									"value": "username",
+									"type": "default"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper.jpg"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/Alur ErrorSolved.drawio (1).png"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (2).jpg"
+								},
+								{
+									"key": "images",
+									"type": "file",
+									"src": "/home/ryanos/Downloads/wallpaperflare.com_wallpaper (2).jpg"
+								}
+							]
+						},
 						"url": {
-							"raw": "http://localhost:{{port}}/aspirations?email=user1@gmail.com",
+							"raw": "http://localhost:{{port}}/aspirations/guest",
 							"protocol": "http",
 							"host": [
 								"localhost"
 							],
 							"port": "{{port}}",
 							"path": [
+								"aspirations",
+								"guest"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Aspirations",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwMDY1LCJleHAiOjE2OTAzMTMyNjV9.XmaM6YXfgwiZMYOTGfHJYw3BFV4BFU1BqoRciY8vBSE",
+								"type": "default"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "alamat",
+									"value": "coba update",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8000/aspirations",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8000",
+							"path": [
 								"aspirations"
 							],
 							"query": [
 								{
-									"key": "email",
-									"value": "user1@gmail.com"
+									"key": "limit",
+									"value": "20",
+									"disabled": true
+								},
+								{
+									"key": "offset",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "item",
+									"value": "judul",
+									"disabled": true
 								}
 							]
 						}
@@ -408,7 +519,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:{{port}}/aspirations/2",
+							"raw": "http://localhost:{{port}}/aspirations/13",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -416,7 +527,7 @@
 							"port": "{{port}}",
 							"path": [
 								"aspirations",
-								"2"
+								"13"
 							]
 						}
 					},
@@ -429,18 +540,13 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMjcwNjI4LCJleHAiOjE2OTAzMTM4Mjh9.NK-e5yieTVGj6AM4Gkn6Jp-rErhn-blE93jzh-NaNqU",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwODEyNDI5LCJleHAiOjE2OTA4NTU2Mjl9.K0K_ipbOtv8UqIhCcXghkTGz4AS-Y6pP33HMtJGOJHQ",
 								"type": "default"
 							}
 						],
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
-								{
-									"key": "status",
-									"value": "Selesai",
-									"type": "text"
-								},
 								{
 									"key": "komentar",
 									"value": "saya ingin berkomentar",
@@ -449,7 +555,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/aspirations/10",
+							"raw": "http://localhost:{{port}}/aspirations/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -457,7 +563,7 @@
 							"port": "{{port}}",
 							"path": [
 								"aspirations",
-								"10"
+								"1"
 							]
 						}
 					},
@@ -470,7 +576,7 @@
 						"header": [
 							{
 								"key": "authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwiaWF0IjoxNjkwMjcwNTU2LCJleHAiOjE2OTAzMTM3NTZ9.CzU88cAe3AgO71OtOag7E0ThkPXvwfoVMoL3hTRSC8k",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwMzYzNDU4LCJleHAiOjE2OTA0MDY2NTh9.QWrSzx6aGoKkdSuteensge1UTHBBYf8X8UXN_o89qos",
 								"type": "default"
 							}
 						],
@@ -507,7 +613,7 @@
 							]
 						},
 						"url": {
-							"raw": "http://localhost:{{port}}/aspirations/10/user",
+							"raw": "http://localhost:{{port}}/aspirations/2/user",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -515,7 +621,7 @@
 							"port": "{{port}}",
 							"path": [
 								"aspirations",
-								"10",
+								"2",
 								"user"
 							]
 						}
@@ -553,7 +659,72 @@
 					"name": "Get Aspiration by User Id",
 					"request": {
 						"method": "GET",
-						"header": []
+						"header": [
+							{
+								"key": "authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjkwNzcxMDg5LCJleHAiOjE2OTA4MTQyODl9.pwV54bwsusoYs2XSehMoUoGUUqrH9d4LwyoPl_kCUYE",
+								"type": "default"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:{{port}}/useraspirations?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"useraspirations"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stat per month",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/statistics/per_month",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"statistics",
+								"per_month"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Stat per Week",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:{{port}}/aspirations/statistics/per_week",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "{{port}}",
+							"path": [
+								"aspirations",
+								"statistics",
+								"per_week"
+							]
+						}
 					},
 					"response": []
 				}

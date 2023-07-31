@@ -116,6 +116,28 @@ exports.getAllAspirations = async (req, res) => {
     } = req.query;
     const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
 
+    let whereClause = {};
+    if (status) {
+      whereClause = {
+        [Op.and]: [
+          { status },
+          {
+            [Op.or]: [
+              { email: { [Op.like]: `%${search}%` } },
+              { judul: { [Op.like]: `%${search}%` } },
+            ],
+          },
+        ],
+      };
+    } else {
+      whereClause = {
+        [Op.or]: [
+          { email: { [Op.like]: `%${search}%` } },
+          { judul: { [Op.like]: `%${search}%` } },
+        ],
+      };
+    }
+
     const data = await Aspiration.findAll({
       include: [
         { model: Image, attributes: ['id', 'url'] },
@@ -130,31 +152,11 @@ exports.getAllAspirations = async (req, res) => {
       ],
       limit: parseInt(limit),
       offset: offset,
-      where: {
-        [Op.and]: [
-          { status },
-          {
-            [Op.or]: [
-              { email: { [Op.like]: `%${search}%` } },
-              { judul: { [Op.like]: `%${search}%` } },
-            ],
-          },
-        ],
-      },
+      where: whereClause,
       order: [[item, orderBy]],
     });
     const total = await Aspiration.count({
-      where: {
-        [Op.and]: [
-          { status },
-          {
-            [Op.or]: [
-              { email: { [Op.like]: `%${search}%` } },
-              { judul: { [Op.like]: `%${search}%` } },
-            ],
-          },
-        ],
-      },
+      where: whereClause,
     });
     const response = {
       status_response: true,
