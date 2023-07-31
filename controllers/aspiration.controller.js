@@ -300,13 +300,13 @@ exports.updateAspByAdmin = async (req, res) => {
       data.komentar = komentar;
     }
 
-    if (aspiration.status === 'Submitted') {
-      data.status = 'Processed';
-    } else if (aspiration.status === 'Processed') {
-      data.status = 'Done';
+    if (aspiration.status === 'Diajukan') {
+      data.status = 'Diproses';
+    } else if (aspiration.status === 'Diproses') {
+      data.status = 'Selesai';
     }
 
-    if (!komentar && data.status === 'Done' && !aspiration.komentar) {
+    if (!komentar && data.status === 'Selesai' && !aspiration.komentar) {
       const response = {
         status_response: false,
         message: 'Harus menyertakan komentar',
@@ -363,10 +363,10 @@ exports.updateAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
-    if (aspiration.status !== 'Submitted') {
+    if (aspiration.status !== 'Diajukan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa mengupdate yang berstatus 'Submitted'`,
+        message: `Hanya bisa mengupdate yang berstatus 'Diajukan'`,
         errors: 'Not found',
         data: null,
       };
@@ -380,12 +380,12 @@ exports.updateAspByUser = async (req, res) => {
     };
     await Aspiration.update(data, {
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
       },
     });
     const updatedAsp = await Aspiration.findOne({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
       },
       include: [{ model: Image, attributes: ['id', 'url'] }],
     });
@@ -425,10 +425,10 @@ exports.deleteAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
-    if (aspiration.status !== 'Submitted') {
+    if (aspiration.status !== 'Diajukan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa menghapus aspirasi dengan status 'Submitted'`,
+        message: `Hanya bisa menghapus aspirasi dengan status 'Diajukan'`,
         errors: 'Bad request',
         data: null,
       };
@@ -436,7 +436,7 @@ exports.deleteAspByUser = async (req, res) => {
     }
     const deletedAsp = await Aspiration.destroy({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Submitted' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
       },
     });
     const response = {

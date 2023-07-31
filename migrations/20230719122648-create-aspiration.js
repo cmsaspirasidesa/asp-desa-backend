@@ -24,8 +24,8 @@ module.exports = {
       },
       status: {
         allowNull: false,
-        type: Sequelize.ENUM('Submitted', 'Processed', 'Done'),
-        defaultValue: 'Submitted',
+        type: Sequelize.ENUM('Diajukan', 'Diproses', 'Selesai'),
+        defaultValue: 'Diajukan',
       },
       komentar: {
         type: Sequelize.STRING,

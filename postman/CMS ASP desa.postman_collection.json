@@ -438,7 +438,7 @@
 							"urlencoded": [
 								{
 									"key": "status",
-									"value": "Done",
+									"value": "Selesai",
 									"type": "text"
 								},
 								{
