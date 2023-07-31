@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       lokasi: DataTypes.STRING,
       status: {
         allowNull: false,
-        type: DataTypes.ENUM('Submitted', 'Processed', 'Done'),
-        defaultValue: 'Submitted',
+        type: DataTypes.ENUM('Diajukan', 'Diproses', 'Selesai'),
+        defaultValue: 'Diajukan',
       },
       komentar: DataTypes.STRING,
       email: {
