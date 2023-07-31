@@ -137,7 +137,14 @@ exports.getAllAspirations = async (req, res) => {
       },
       order: [[item, orderBy]],
     });
-    const total = await Aspiration.count({});
+    const total = await Aspiration.count({
+      where: {
+        [Op.or]: [
+          { email: { [Op.like]: `%${search}%` } },
+          { judul: { [Op.like]: `%${search}%` } },
+        ],
+      },
+    });
     const response = {
       status_response: true,
       message: 'Daftar aspirasi',
@@ -194,26 +201,56 @@ exports.getAspirationById = async (req, res) => {
 
 exports.getUserAspirations = async (req, res) => {
   try {
+    const {
+      search = '',
+      limit = '10',
+      page = '1',
+      item = 'createdAt',
+      orderBy = 'DESC',
+    } = req.query;
     const id = req.userId;
+    const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
+
     const theAspirations = await Aspiration.findAll({
       include: [
         { model: Image, attributes: ['id', 'url'] },
         {
           model: User,
           attributes: ['id', 'nama', 'email', 'nik'],
+          required: false,
         },
       ],
-      where: { user_id: id },
-      order: [['createdAt', 'DESC']],
+      limit: parseInt(limit),
+      offset: offset,
+      where: {
+        [Op.and]: [{ judul: { [Op.like]: `${search}%` } }, { user_id: id }],
+      },
+      order: [[item, orderBy]],
     });
     if (theAspirations === null || !theAspirations) {
       return res.status(404).send('not found');
     }
+    const total = await Aspiration.count({
+      where: {
+        [Op.and]: [
+          { user_id: id },
+          {
+            [Op.or]: [{ judul: { [Op.like]: `${search}%` } }],
+          },
+        ],
+      },
+    });
     const response = {
       status_response: true,
-      message: `Aspirasi user`,
+      message: 'Daftar aspirasi',
       errors: null,
-      data: theAspirations,
+      data: {
+        data: theAspirations,
+        total,
+        page: parseInt(page),
+        per_page: parseInt(limit),
+        total_page: Math.ceil(total / limit),
+      },
     };
     res.status(200).send(response);
   } catch (error) {

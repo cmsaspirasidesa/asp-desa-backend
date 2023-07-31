@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const bcrypt = require('bcrypt');
 const { Op } = require('sequelize');
 const User = require('../models').User;
@@ -27,8 +28,8 @@ exports.findAllUser = async (req, res) => {
       where: handleWhere,
     });
     const users = await User.findAll(paramQuerySQL);
-    let pageNumber = req.pageNumber;
-    let totalPages = Math.ceil(totalUsers / req.pageLimit);
+    const pageNumber = req.pageNumber;
+    const totalPages = Math.ceil(totalUsers / req.pageLimit);
     const response = {
       status_response: true,
       message: 'Semua data user',

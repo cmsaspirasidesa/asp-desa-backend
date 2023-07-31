@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const { Op, QueryTypes } = require('sequelize');
 const { sequelize } = require('../models');
 const Aspiration = require('../models').Aspiration;
