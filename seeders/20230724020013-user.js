@@ -30,7 +30,7 @@ const testUser = [
     updatedAt: new Date(),
   },
   {
-    id: 2,
+    // id: 2,
     nama: fakerID_ID.person.fullName(),
     email: 'user1@gmail.com',
     password: bcrypt.hashSync('123', 8),
