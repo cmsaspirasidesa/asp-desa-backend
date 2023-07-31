@@ -223,7 +223,7 @@ exports.getUserAspirations = async (req, res) => {
       limit: parseInt(limit),
       offset: offset,
       where: {
-        [Op.and]: [{ judul: { [Op.like]: `${search}%` } }, { user_id: id }],
+        [Op.and]: [{ judul: { [Op.like]: `%${search}%` } }, { user_id: id }],
       },
       order: [[item, orderBy]],
     });
@@ -235,7 +235,7 @@ exports.getUserAspirations = async (req, res) => {
         [Op.and]: [
           { user_id: id },
           {
-            [Op.or]: [{ judul: { [Op.like]: `${search}%` } }],
+            [Op.or]: [{ judul: { [Op.like]: `%${search}%` } }],
           },
         ],
       },
