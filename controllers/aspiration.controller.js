@@ -108,6 +108,7 @@ exports.getAllAspirations = async (req, res) => {
   try {
     const {
       search = '',
+      status,
       limit = '10',
       page = '1',
       item = 'createdAt',
@@ -130,18 +131,28 @@ exports.getAllAspirations = async (req, res) => {
       limit: parseInt(limit),
       offset: offset,
       where: {
-        [Op.or]: [
-          { email: { [Op.like]: `%${search}%` } },
-          { judul: { [Op.like]: `%${search}%` } },
+        [Op.and]: [
+          { status },
+          {
+            [Op.or]: [
+              { email: { [Op.like]: `%${search}%` } },
+              { judul: { [Op.like]: `%${search}%` } },
+            ],
+          },
         ],
       },
       order: [[item, orderBy]],
     });
     const total = await Aspiration.count({
       where: {
-        [Op.or]: [
-          { email: { [Op.like]: `%${search}%` } },
-          { judul: { [Op.like]: `%${search}%` } },
+        [Op.and]: [
+          { status },
+          {
+            [Op.or]: [
+              { email: { [Op.like]: `%${search}%` } },
+              { judul: { [Op.like]: `%${search}%` } },
+            ],
+          },
         ],
       },
     });
