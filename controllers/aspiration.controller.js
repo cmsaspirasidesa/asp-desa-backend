@@ -420,19 +420,28 @@ exports.deleteAspByUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req;
+    const { userRole } = req;
     const aspiration = await Aspiration.findOne({
-      where: {
-        [Op.and]: [{ id }, { user_id: userId }],
-      },
+      where: { id },
     });
     if (!aspiration) {
       const response = {
         status_response: false,
-        message: `Kamu tidak memiliki aspirasi tersebut`,
+        message: `Aspirasi tidak ditemukan`,
         errors: 'Not found',
         data: null,
       };
       return res.status(404).send(response);
+    }
+    console.log(aspiration.user_id, userId, userRole);
+    if (userRole !== 2 && aspiration.user_id !== userId) {
+      const response = {
+        status_response: false,
+        message: `Kamu tidak memiliki akses untuk menghapus`,
+        errors: 'Forbidden',
+        data: null,
+      };
+      return res.status(403).send(response);
     }
     if (aspiration.status !== 'Diajukan') {
       const response = {
@@ -519,34 +528,35 @@ exports.getStatPerMount = async (req, res) => {
 };
 
 exports.getStatPerWeek = async (req, res) => {
+  const currentYear = new Date().getFullYear();
+  const currentMonth = 8 || new Date().getMonth();
+
   try {
     const query = `
-SELECT
-    DATE(MIN(startDate)) AS startDate,
-    DATE(MAX(endDate)) AS endDate,
-    COUNT(*) AS total_aspirations
-FROM (
-    SELECT
-        *,
-        DATE_SUB(createdAt, INTERVAL (DAYOFWEEK(createdAt) - 1) DAY) AS startDate,
-        DATE_ADD(createdAt, INTERVAL (7 - DAYOFWEEK(createdAt)) DAY) AS endDate
-    FROM
-        Aspirations
-) AS subquery
-GROUP BY
-    WEEK(createdAt)
-ORDER BY
-    startDate ASC;
+SELECT WEEK(createdAt) - WEEK(DATE_SUB(createdAt, INTERVAL DAYOFMONTH(createdAt) - 1 DAY)) + 1 as week,
+       IFNULL(COUNT(Aspirations.id), 0) AS total_aspirations
+ FROM Aspirations 
+ WHERE MONTH(createdAt) = :currentMonth AND YEAR(createdAt) = :currentYear
+ GROUP BY Week
+ ORDER BY Week ASC;
     `;
 
-    const stat = await Aspiration.sequelize.query(query, {
+    const statistic = await Aspiration.sequelize.query(query, {
       type: Sequelize.QueryTypes.SELECT,
+      replacements: { currentMonth, currentYear },
     });
+    const week = [];
+    const stat = [];
+    for (let i = 0; i < statistic.length; i++) {
+      week.push(statistic[i].week);
+      stat.push(statistic[i].total_aspirations);
+    }
+    const data = { week, stat };
     const response = {
       status_response: true,
       message: `Statistik aspirasi perminggu`,
       errors: null,
-      data: stat,
+      data: data,
     };
     res.status(200).send(response);
   } catch (error) {
