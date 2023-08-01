@@ -529,22 +529,27 @@ exports.getStatPerMount = async (req, res) => {
 
 exports.getStatPerWeek = async (req, res) => {
   const currentYear = new Date().getFullYear();
-  const currentMonth = 8 || new Date().getMonth();
+  const currentMonth = new Date().getMonth();
 
   try {
     const query = `
-SELECT WEEK(createdAt) - WEEK(DATE_SUB(createdAt, INTERVAL DAYOFMONTH(createdAt) - 1 DAY)) + 1 as week,
+    SELECT WeekDates.Week AS week,
        IFNULL(COUNT(Aspirations.id), 0) AS total_aspirations
- FROM Aspirations 
- WHERE MONTH(createdAt) = :currentMonth AND YEAR(createdAt) = :currentYear
- GROUP BY Week
- ORDER BY Week ASC;
+FROM (
+    SELECT 1 AS Week UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7
+) AS WeekDates
+LEFT JOIN Aspirations ON WeekDates.Week = WEEK(Aspirations.createdAt) - WEEK(DATE_SUB(Aspirations.createdAt, INTERVAL DAYOFMONTH(Aspirations.createdAt) - 1 DAY)) + 1
+                     AND MONTH(Aspirations.createdAt) = :currentMonth
+                     AND YEAR(Aspirations.createdAt) = :currentYear
+GROUP BY WeekDates.Week
+ORDER BY WeekDates.Week ASC;
     `;
 
     const statistic = await Aspiration.sequelize.query(query, {
       type: Sequelize.QueryTypes.SELECT,
       replacements: { currentMonth, currentYear },
     });
+    console.log(statistic);
     const week = [];
     const stat = [];
     for (let i = 0; i < statistic.length; i++) {
