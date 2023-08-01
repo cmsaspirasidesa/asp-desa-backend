@@ -420,19 +420,28 @@ exports.deleteAspByUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { userId } = req;
+    const { userRole } = req;
     const aspiration = await Aspiration.findOne({
-      where: {
-        [Op.and]: [{ id }, { user_id: userId }],
-      },
+      where: { id },
     });
     if (!aspiration) {
       const response = {
         status_response: false,
-        message: `Kamu tidak memiliki aspirasi tersebut`,
+        message: `Aspirasi tidak ditemukan`,
         errors: 'Not found',
         data: null,
       };
       return res.status(404).send(response);
+    }
+    console.log(aspiration.user_id, userId, userRole);
+    if (userRole !== 2 && aspiration.user_id !== userId) {
+      const response = {
+        status_response: false,
+        message: `Kamu tidak memiliki akses untuk menghapus`,
+        errors: 'Forbidden',
+        data: null,
+      };
+      return res.status(403).send(response);
     }
     if (aspiration.status !== 'Diajukan') {
       const response = {

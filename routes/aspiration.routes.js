@@ -1,5 +1,5 @@
 const express = require('express');
-const { verifyToken, isAdmin, isUser } = require('../middleware/authJWT');
+const { verifyToken, isAdmin } = require('../middleware/authJWT');
 const router = express.Router();
 const aspirationController = require('../controllers/aspiration.controller');
 const upload = require('../middleware/multer');
@@ -34,9 +34,8 @@ router.put(
   aspirationController.updateAspByUser,
 );
 router.delete(
-  '/aspirations/:id/user',
+  '/aspirations/:id',
   verifyToken,
-  isUser,
   aspirationController.deleteAspByUser,
 );
 router.get(
