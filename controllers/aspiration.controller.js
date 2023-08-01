@@ -216,6 +216,7 @@ exports.getUserAspirations = async (req, res) => {
   try {
     const {
       search = '',
+      status = '',
       limit = '10',
       page = '1',
       item = 'createdAt',
@@ -223,6 +224,21 @@ exports.getUserAspirations = async (req, res) => {
     } = req.query;
     const id = req.userId;
     const offset = (parseInt(page) - 1) * parseInt(limit) || 0;
+
+    let whereClause = {};
+    if (status) {
+      whereClause = {
+        [Op.and]: [
+          { status },
+          { judul: { [Op.like]: `%${search}%` } },
+          { user_id: id },
+        ],
+      };
+    } else {
+      whereClause = {
+        [Op.and]: [{ judul: { [Op.like]: `%${search}%` } }, { user_id: id }],
+      };
+    }
 
     const theAspirations = await Aspiration.findAll({
       include: [
@@ -235,23 +251,14 @@ exports.getUserAspirations = async (req, res) => {
       ],
       limit: parseInt(limit),
       offset: offset,
-      where: {
-        [Op.and]: [{ judul: { [Op.like]: `%${search}%` } }, { user_id: id }],
-      },
+      where: whereClause,
       order: [[item, orderBy]],
     });
     if (theAspirations === null || !theAspirations) {
       return res.status(404).send('not found');
     }
     const total = await Aspiration.count({
-      where: {
-        [Op.and]: [
-          { user_id: id },
-          {
-            [Op.or]: [{ judul: { [Op.like]: `%${search}%` } }],
-          },
-        ],
-      },
+      where: whereClause,
     });
     const response = {
       status_response: true,
