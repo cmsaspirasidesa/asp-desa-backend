@@ -433,7 +433,6 @@ exports.deleteAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
-    console.log(aspiration.user_id, userId, userRole);
     if (userRole !== 2 && aspiration.user_id !== userId) {
       const response = {
         status_response: false,
@@ -549,7 +548,6 @@ ORDER BY WeekDates.Week ASC;
       type: Sequelize.QueryTypes.SELECT,
       replacements: { currentMonth, currentYear },
     });
-    console.log(statistic);
     const week = [];
     const stat = [];
     for (let i = 0; i < statistic.length; i++) {
