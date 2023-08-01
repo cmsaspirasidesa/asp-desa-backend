@@ -5,10 +5,10 @@ const { faker } = require('@faker-js/faker');
 require('dotenv').config();
 
 const url = [
-  `localhost:${process.env.PORT}/image1.jpg`,
-  `localhost:${process.env.PORT}/image2.jpeg`,
-  `localhost:${process.env.PORT}/image3.jpg`,
-  `localhost:${process.env.PORT}/image4.jpg`,
+  `http://localhost:${process.env.PORT}/image1.jpg`,
+  `http://localhost:${process.env.PORT}/image2.jpeg`,
+  `http://localhost:${process.env.PORT}/image3.jpg`,
+  `http://localhost:${process.env.PORT}/image4.jpg`,
 ];
 
 const images1 = [...Array(25)].map((image, index) => ({
