@@ -535,7 +535,7 @@ exports.getStatPerWeek = async (req, res) => {
     SELECT WeekDates.Week AS week,
        IFNULL(COUNT(Aspirations.id), 0) AS total_aspirations
 FROM (
-    SELECT 1 AS Week UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5 UNION SELECT 6 UNION SELECT 7
+    SELECT 1 AS Week UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION SELECT 5
 ) AS WeekDates
 LEFT JOIN Aspirations ON WeekDates.Week = WEEK(Aspirations.createdAt) - WEEK(DATE_SUB(Aspirations.createdAt, INTERVAL DAYOFMONTH(Aspirations.createdAt) - 1 DAY)) + 1
                      AND MONTH(Aspirations.createdAt) = :currentMonth
