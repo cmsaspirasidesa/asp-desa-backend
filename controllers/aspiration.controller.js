@@ -2,6 +2,7 @@ const { Op, Sequelize } = require('sequelize');
 const Aspiration = require('../models').Aspiration;
 const Image = require('../models').Image;
 const User = require('../models').User;
+const fs = require('fs');
 
 exports.addAspByUser = async (req, res) => {
   try {
@@ -56,6 +57,8 @@ exports.addAspByUser = async (req, res) => {
 
 exports.addAspByGuest = async (req, res) => {
   try {
+    const { judul, deskripsi, lokasi, email, nama } = req.body;
+    if (!judul || !deskripsi || !lokasi || !email || !nama) {
     const { judul, deskripsi, lokasi, email, nama, ditujukan } = req.body;
     if (!judul || !deskripsi || !lokasi || !email || !nama || !ditujukan) {
       const response = {
@@ -425,6 +428,7 @@ exports.deleteAspByUser = async (req, res) => {
     const { userRole } = req;
     const aspiration = await Aspiration.findOne({
       where: { id },
+      include: [{ model: Image, attributes: ['id', 'url'] }],
     });
     if (!aspiration) {
       const response = {
@@ -455,9 +459,15 @@ exports.deleteAspByUser = async (req, res) => {
     }
     const deletedAsp = await Aspiration.destroy({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
+        [Op.and]: [{ id }, { status: 'Diajukan' }],
       },
     });
+    const images = aspiration.Images;
+    for (let i = 0; i < images.length; i++) {
+      const splited = images[i].url.split('/')[3];
+      const filepath = `./public/${splited}`;
+      fs.unlinkSync(filepath);
+    }
     const response = {
       status_response: true,
       message: `Aspirasi berhasil dihapus`,
