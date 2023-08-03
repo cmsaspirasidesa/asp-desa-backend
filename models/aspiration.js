@@ -19,6 +19,7 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       judul: DataTypes.STRING,
+      kategori: DataTypes.STRING,
       deskripsi: DataTypes.STRING,
       lokasi: DataTypes.STRING,
       status: {

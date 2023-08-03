@@ -13,11 +13,32 @@ const arrMasalahJudul = [
 const aspirations = [];
 
 for (let i = 1; i <= 25; i++) {
-  const judul = `${faker.helpers.arrayElement(
-    arrMasalahJudul,
-  )} ${fakerID_ID.location.streetAddress()}`;
+  const masalah = faker.helpers.arrayElement(arrMasalahJudul);
+  const judul = `${masalah} ${fakerID_ID.location.streetAddress()}`;
+  let kategori;
+  switch (masalah) {
+    case 'Masalah Politik di':
+      kategori = 'Politik';
+      break;
+    case 'Masalah Pembangunan di':
+      kategori = 'Pembangunan';
+      break;
+    case 'Perbaikan Jalan di':
+      kategori = 'Fasilitas';
+      break;
+    case 'Program Pendidikan di':
+      kategori = 'Pendidikan';
+      break;
+    case 'Program Ekonomi di':
+      kategori = 'Ekonomi';
+      break;
+    default:
+      kategori = 'Lainnya';
+      break;
+  }
   aspirations.push({
     judul: judul,
+    kategori: kategori,
     deskripsi: `Penanganan ${judul}`,
     ditujukan: fakerID_ID.person.fullName(),
     lokasi: fakerID_ID.location.streetAddress(),
@@ -49,6 +70,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.bulkDelete('People', null, {});
+    await queryInterface.bulkDelete('Aspirations', null, {});
   },
 };

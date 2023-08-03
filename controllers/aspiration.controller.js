@@ -6,8 +6,8 @@ const fs = require('fs');
 
 exports.addAspByUser = async (req, res) => {
   try {
-    const { judul, deskripsi, lokasi, ditujukan } = req.body;
-    if (!judul || !deskripsi || !lokasi || !ditujukan) {
+    const { judul, deskripsi, lokasi, ditujukan, kategori } = req.body;
+    if (!judul || !deskripsi || !lokasi || !ditujukan || !kategori) {
       const response = {
         status_response: false,
         message: 'Data harus memiliki judul, deskripsi, dan lokasi',
@@ -21,6 +21,7 @@ exports.addAspByUser = async (req, res) => {
       email: req.userEmail,
       nama: req.username,
       judul,
+      kategori,
       ditujukan,
       deskripsi,
       lokasi,
@@ -57,8 +58,17 @@ exports.addAspByUser = async (req, res) => {
 
 exports.addAspByGuest = async (req, res) => {
   try {
-    const { judul, deskripsi, lokasi, email, nama, ditujukan } = req.body;
-    if (!judul || !deskripsi || !lokasi || !email || !nama || !ditujukan) {
+    const { judul, deskripsi, lokasi, email, nama, ditujukan, kategori } =
+      req.body;
+    if (
+      !judul ||
+      !deskripsi ||
+      !lokasi ||
+      !email ||
+      !nama ||
+      !ditujukan ||
+      kategori
+    ) {
       const response = {
         status_response: false,
         message:
@@ -73,6 +83,7 @@ exports.addAspByGuest = async (req, res) => {
       user_id: null,
       email,
       judul,
+      kategori,
       ditujukan,
       deskripsi,
       lokasi,
@@ -359,7 +370,7 @@ exports.updateAspByUser = async (req, res) => {
     const { userId } = req;
     const { id } = req.params;
 
-    const { judul, deskripsi, lokasi, ditujukan } = req.body;
+    const { judul, deskripsi, lokasi, ditujukan, kategori } = req.body;
     const aspiration = await Aspiration.findOne({
       where: {
         [Op.and]: [{ id }, { user_id: userId }],
@@ -386,6 +397,7 @@ exports.updateAspByUser = async (req, res) => {
 
     const data = {
       judul,
+      kategori,
       deskripsi,
       ditujukan,
       lokasi,
