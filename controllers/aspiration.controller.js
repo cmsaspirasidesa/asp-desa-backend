@@ -457,7 +457,7 @@ exports.deleteAspByUser = async (req, res) => {
     }
     const deletedAsp = await Aspiration.destroy({
       where: {
-        [Op.and]: [{ id }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { status: 'Disampaikan' }],
       },
     });
     const images = aspiration.Images;
