@@ -57,8 +57,6 @@ exports.addAspByUser = async (req, res) => {
 
 exports.addAspByGuest = async (req, res) => {
   try {
-    const { judul, deskripsi, lokasi, email, nama } = req.body;
-    if (!judul || !deskripsi || !lokasi || !email || !nama) {
     const { judul, deskripsi, lokasi, email, nama, ditujukan } = req.body;
     if (!judul || !deskripsi || !lokasi || !email || !nama || !ditujukan) {
       const response = {
