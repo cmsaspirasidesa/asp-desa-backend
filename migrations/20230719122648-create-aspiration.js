@@ -17,6 +17,11 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING,
       },
+      kategori: {
+        allowNull: false,
+        type: Sequelize.STRING,
+        defaultValue: 'Umum',
+      },
       deskripsi: {
         allowNull: false,
         type: Sequelize.TEXT,
@@ -32,6 +37,8 @@ module.exports = {
       },
       ditujukan: {
         type: Sequelize.STRING,
+        defaultValue: 'Desa',
+        allowNull: false,
       },
       komentar: {
         type: Sequelize.STRING,
