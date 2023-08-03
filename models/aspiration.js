@@ -26,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.ENUM('Disampaikan', 'Diproses', 'Selesai'),
         defaultValue: 'Disampaikan',
       },
+      ditujukan: DataTypes.STRING,
       komentar: DataTypes.STRING,
       email: {
         allowNull: false,

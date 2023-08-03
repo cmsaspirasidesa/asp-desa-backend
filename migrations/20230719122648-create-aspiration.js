@@ -1,5 +1,8 @@
 /* eslint-disable new-cap */
 'use strict';
+
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -26,6 +29,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.ENUM('Disampaikan', 'Diproses', 'Selesai'),
         defaultValue: 'Disampaikan',
+      },
+      ditujukan: {
+        type: Sequelize.STRING,
       },
       komentar: {
         type: Sequelize.STRING,
