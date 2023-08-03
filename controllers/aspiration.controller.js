@@ -6,8 +6,8 @@ const fs = require('fs');
 
 exports.addAspByUser = async (req, res) => {
   try {
-    const { judul, deskripsi, lokasi } = req.body;
-    if (!judul || !deskripsi || !lokasi) {
+    const { judul, deskripsi, lokasi, ditujukan } = req.body;
+    if (!judul || !deskripsi || !lokasi || !ditujukan) {
       const response = {
         status_response: false,
         message: 'Data harus memiliki judul, deskripsi, dan lokasi',
@@ -21,6 +21,7 @@ exports.addAspByUser = async (req, res) => {
       email: req.userEmail,
       nama: req.username,
       judul,
+      ditujukan,
       deskripsi,
       lokasi,
     };
@@ -56,9 +57,10 @@ exports.addAspByUser = async (req, res) => {
 
 exports.addAspByGuest = async (req, res) => {
   try {
-    console.log(req.body);
     const { judul, deskripsi, lokasi, email, nama } = req.body;
     if (!judul || !deskripsi || !lokasi || !email || !nama) {
+    const { judul, deskripsi, lokasi, email, nama, ditujukan } = req.body;
+    if (!judul || !deskripsi || !lokasi || !email || !nama || !ditujukan) {
       const response = {
         status_response: false,
         message:
@@ -73,6 +75,7 @@ exports.addAspByGuest = async (req, res) => {
       user_id: null,
       email,
       judul,
+      ditujukan,
       deskripsi,
       lokasi,
     };
@@ -311,7 +314,7 @@ exports.updateAspByAdmin = async (req, res) => {
       data.komentar = komentar;
     }
 
-    if (aspiration.status === 'Diajukan') {
+    if (aspiration.status === 'Disampaikan') {
       data.status = 'Diproses';
     } else if (aspiration.status === 'Diproses') {
       data.status = 'Selesai';
@@ -358,8 +361,7 @@ exports.updateAspByUser = async (req, res) => {
     const { userId } = req;
     const { id } = req.params;
 
-    const { judul, deskripsi, lokasi } = req.body;
-
+    const { judul, deskripsi, lokasi, ditujukan } = req.body;
     const aspiration = await Aspiration.findOne({
       where: {
         [Op.and]: [{ id }, { user_id: userId }],
@@ -374,10 +376,10 @@ exports.updateAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
-    if (aspiration.status !== 'Diajukan') {
+    if (aspiration.status !== 'Disampaikan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa mengupdate yang berstatus 'Diajukan'`,
+        message: `Hanya bisa mengupdate yang berstatus 'Disampaikan'`,
         errors: 'Not found',
         data: null,
       };
@@ -387,16 +389,17 @@ exports.updateAspByUser = async (req, res) => {
     const data = {
       judul,
       deskripsi,
+      ditujukan,
       lokasi,
     };
     await Aspiration.update(data, {
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
       },
     });
     const updatedAsp = await Aspiration.findOne({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
       },
       include: [{ model: Image, attributes: ['id', 'url'] }],
     });
@@ -445,10 +448,10 @@ exports.deleteAspByUser = async (req, res) => {
       };
       return res.status(403).send(response);
     }
-    if (aspiration.status !== 'Diajukan') {
+    if (aspiration.status !== 'Disampaikan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa menghapus aspirasi dengan status 'Diajukan'`,
+        message: `Hanya bisa menghapus aspirasi dengan status 'Disampaikan'`,
         errors: 'Bad request',
         data: null,
       };

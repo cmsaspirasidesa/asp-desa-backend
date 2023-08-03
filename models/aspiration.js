@@ -23,9 +23,10 @@ module.exports = (sequelize, DataTypes) => {
       lokasi: DataTypes.STRING,
       status: {
         allowNull: false,
-        type: DataTypes.ENUM('Diajukan', 'Diproses', 'Selesai'),
-        defaultValue: 'Diajukan',
+        type: DataTypes.ENUM('Disampaikan', 'Diproses', 'Selesai'),
+        defaultValue: 'Disampaikan',
       },
+      ditujukan: DataTypes.STRING,
       komentar: DataTypes.STRING,
       email: {
         allowNull: false,
