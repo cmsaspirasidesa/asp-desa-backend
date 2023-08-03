@@ -309,7 +309,7 @@ exports.updateAspByAdmin = async (req, res) => {
       data.komentar = komentar;
     }
 
-    if (aspiration.status === 'Diajukan') {
+    if (aspiration.status === 'Disampaikan') {
       data.status = 'Diproses';
     } else if (aspiration.status === 'Diproses') {
       data.status = 'Selesai';
@@ -372,10 +372,10 @@ exports.updateAspByUser = async (req, res) => {
       };
       return res.status(404).send(response);
     }
-    if (aspiration.status !== 'Diajukan') {
+    if (aspiration.status !== 'Disampaikan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa mengupdate yang berstatus 'Diajukan'`,
+        message: `Hanya bisa mengupdate yang berstatus 'Disampaikan'`,
         errors: 'Not found',
         data: null,
       };
@@ -389,12 +389,12 @@ exports.updateAspByUser = async (req, res) => {
     };
     await Aspiration.update(data, {
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
       },
     });
     const updatedAsp = await Aspiration.findOne({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
       },
       include: [{ model: Image, attributes: ['id', 'url'] }],
     });
@@ -442,10 +442,10 @@ exports.deleteAspByUser = async (req, res) => {
       };
       return res.status(403).send(response);
     }
-    if (aspiration.status !== 'Diajukan') {
+    if (aspiration.status !== 'Disampaikan') {
       const response = {
         status_response: false,
-        message: `Hanya bisa menghapus aspirasi dengan status 'Diajukan'`,
+        message: `Hanya bisa menghapus aspirasi dengan status 'Disampaikan'`,
         errors: 'Bad request',
         data: null,
       };
@@ -453,7 +453,7 @@ exports.deleteAspByUser = async (req, res) => {
     }
     const deletedAsp = await Aspiration.destroy({
       where: {
-        [Op.and]: [{ id }, { user_id: userId }, { status: 'Diajukan' }],
+        [Op.and]: [{ id }, { user_id: userId }, { status: 'Disampaikan' }],
       },
     });
     const response = {
