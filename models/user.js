@@ -32,6 +32,11 @@ module.exports = (sequelize, DataTypes) => {
       refresh_token: DataTypes.TEXT,
       access_token: DataTypes.TEXT,
       expire: DataTypes.DATE,
+      status: {
+        allowNull: false,
+        type: DataTypes.ENUM('active', 'mute'),
+        defaultValue: 'active',
+      },
       role_id: { type: DataTypes.INTEGER, defaultValue: 1 },
     },
     {

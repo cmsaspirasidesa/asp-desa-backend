@@ -17,7 +17,7 @@ exports.findAllUser = async (req, res) => {
   };
   const paramQuerySQL = {
     include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
-    attributes: ['id', 'nama', 'email', 'nik', 'alamat'],
+    attributes: ['id', 'nama', 'email', 'nik', 'alamat', 'status'],
     where: handleWhere,
     limit: req.pageLimit,
     offset: req.pageOffset,
@@ -57,7 +57,7 @@ exports.findUserById = async (req, res) => {
     const { id } = req.params;
     const theUser = await User.findByPk(id, {
       include: [{ model: Role, where: { id: 1 }, attributes: ['nama_role'] }],
-      attributes: ['id', 'nama', 'email', 'alamat', 'nik'],
+      attributes: ['id', 'nama', 'email', 'alamat', 'nik', 'status'],
     });
     if (theUser === null || !theUser) {
       return res.status(404).send('not found');
@@ -83,10 +83,11 @@ exports.findUserById = async (req, res) => {
 exports.updateUserById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, password, alamat } = req.body;
+    const { email, password, alamat, status } = req.body;
     const data = {
       email,
       alamat,
+      status,
     };
     if (password) {
       data.password = bcrypt.hashSync(password, 8);
@@ -94,7 +95,7 @@ exports.updateUserById = async (req, res) => {
     await User.update(data, { where: { id } });
     const user = await User.findOne({
       where: { id },
-      attributes: ['id', 'nama', 'email', 'alamat', 'nik'],
+      attributes: ['id', 'nama', 'email', 'alamat', 'nik', 'status'],
     });
     const response = {
       status_response: true,

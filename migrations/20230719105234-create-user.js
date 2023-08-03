@@ -39,6 +39,11 @@ module.exports = {
       expire: {
         type: Sequelize.DATE,
       },
+      status: {
+        allowNull: false,
+        type: Sequelize.ENUM('active', 'mute'),
+        defaultValue: 'active',
+      },
       role_id: {
         allowNull: false,
         defaultValue: 1,

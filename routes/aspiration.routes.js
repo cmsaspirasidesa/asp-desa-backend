@@ -3,10 +3,12 @@ const { verifyToken, isAdmin } = require('../middleware/authJWT');
 const router = express.Router();
 const aspirationController = require('../controllers/aspiration.controller');
 const upload = require('../middleware/multer');
+const { checkStatusUser } = require('../middleware/userMute');
 
 router.post(
   '/aspirations',
   verifyToken,
+  checkStatusUser,
   upload.array('images', 4),
   aspirationController.addAspByUser,
 );
