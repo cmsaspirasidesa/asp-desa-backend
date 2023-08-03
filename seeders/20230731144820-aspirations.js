@@ -18,7 +18,7 @@ for (let i = 1; i <= 25; i++) {
     judul: judul,
     deskripsi: `Penanganan ${judul}`,
     lokasi: fakerID_ID.location.streetAddress(),
-    status: faker.helpers.arrayElement(['Diajukan', 'Diproses', 'Selesai',]),
+    status: faker.helpers.arrayElement(['Disampaikan', 'Diproses', 'Selesai',]),
     komentar: '',
     email: fakerID_ID.internet.email(),
     nama: fakerID_ID.person.fullName(),
